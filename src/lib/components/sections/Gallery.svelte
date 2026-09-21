@@ -6,8 +6,8 @@
 		alt: string;
 	};
 
-	// 15 fotos locais — ordem aleatória baralhada no cliente
-	const rawPhotos: Photo[] = [
+	// 15 fotos — ordem fixa editorial
+	const photos: Photo[] = [
 		{ src: '/galeria/_MG_0665.jpg', alt: 'Nostos — _MG_0665' },
 		{ src: '/galeria/_MG_0670.jpg', alt: 'Nostos — _MG_0670' },
 		{ src: '/galeria/_MG_0686.jpg', alt: 'Nostos — _MG_0686' },
@@ -24,21 +24,6 @@
 		{ src: '/galeria/IMG_4486.webp', alt: 'Nostos — IMG_4486' },
 		{ src: '/galeria/IMG_4487.jpg', alt: 'Nostos — IMG_4487' }
 	];
-
-	function shuffle<T>(arr: T[]): T[] {
-		const a = [...arr];
-		for (let i = a.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[a[i], a[j]] = [a[j], a[i]];
-		}
-		return a;
-	}
-
-	let photos: Photo[] = $state(rawPhotos);
-	// baralha uma vez no cliente
-	$effect(() => {
-		photos = shuffle(rawPhotos);
-	});
 
 	let active: string | null = $state(null);
 	let activeAlt = $state('');

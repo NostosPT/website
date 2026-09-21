@@ -2,6 +2,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { metadata } from '$lib/metadata';
+	import ProtectImages from '$lib/components/ui/ProtectImages.svelte';
 
 	let { children } = $props();
 </script>
@@ -39,4 +40,5 @@
 	<link rel="icon" href={favicon} />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 </svelte:head>
+<ProtectImages />
 {@render children()}
