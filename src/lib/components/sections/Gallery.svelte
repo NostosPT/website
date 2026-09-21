@@ -25,8 +25,7 @@
 		{ src: '/galeria/IMG_4487.jpg', alt: 'Nostos — IMG_4487' }
 	];
 
-	let active: string | null = $state(null);
-	let activeAlt = $state('');
+	let activeIndex: number | null = $state(null);
 </script>
 
 <section class="gallery" aria-labelledby="galeria-heading">
@@ -45,8 +44,7 @@
 					class="ph"
 					aria-label="Ampliar: {p.alt}"
 					onclick={() => {
-						active = p.src;
-						activeAlt = p.alt;
+						activeIndex = i;
 					}}
 				>
 					<img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
@@ -57,7 +55,13 @@
 	</div>
 </section>
 
-<Lightbox src={active ?? ''} alt={activeAlt} open={!!active} onclose={() => (active = null)} />
+<Lightbox
+	photos={photos}
+	index={activeIndex}
+	open={activeIndex !== null}
+	onclose={() => (activeIndex = null)}
+	onIndexChange={(i) => (activeIndex = i)}
+/>
 
 <style>
 	/* Hugo Santos reference: full-bleed, tight uniform gutter, no card chrome, varied heights natural */
