@@ -8,18 +8,18 @@
 
 	let {
 		links = [
-			{ label: 'Work', href: '#work' },
-			{ label: 'Journal', href: '#journal' },
-			{ label: 'Studio', href: '#studio' },
-			{ label: 'Contact', href: '#contact' }
+			{ label: "Work", href: "#work" },
+			{ label: "Journal", href: "#journal" },
+			{ label: "Studio", href: "#studio" },
+			{ label: "Contact", href: "#contact" },
 		],
-		activeId
+		activeId,
 	}: Props = $props();
 
 	let scrolled = $state(false);
 
 	$effect(() => {
-		if (typeof window === 'undefined') return;
+		if (typeof window === "undefined") return;
 
 		const onScroll = () => {
 			scrolled = window.scrollY > 8;
@@ -27,8 +27,8 @@
 
 		// init
 		onScroll();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
 	});
 </script>
 
@@ -36,8 +36,10 @@
 	<div class="navbar-inner">
 		<a class="navbar-brand" href="/" aria-label="Nostos — home">
 			<span class="brand-mark" class:visible={scrolled}>Nostos</span>
-			<span class="brand-sep" class:visible={scrolled} aria-hidden="true">—</span>
-			<span class="brand-sub">Photography Studio</span>
+			<span class="brand-sep" class:visible={scrolled} aria-hidden="true"
+				>—</span
+			>
+			<span class="brand-sub">Photography</span>
 		</a>
 
 		<ul class="navbar-links">
@@ -45,7 +47,9 @@
 				<li>
 					<a
 						href={link.href}
-						aria-current={activeId === link.href.replace('#', '') ? 'page' : undefined}
+						aria-current={activeId === link.href.replace("#", "")
+							? "page"
+							: undefined}
 					>
 						{link.label}
 					</a>
@@ -74,7 +78,8 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
-		padding: 1.1rem clamp(1.25rem, 4vw, 2.75rem) 1.1rem calc(var(--gutter) * 0.66);
+		padding: 1.1rem clamp(1.25rem, 4vw, 2.75rem) 1.1rem
+			calc(var(--gutter) * 0.66);
 		pointer-events: auto;
 		max-width: 100%;
 	}
@@ -171,7 +176,7 @@
 	}
 
 	.navbar-links a:hover,
-	.navbar-links a[aria-current='page'] {
+	.navbar-links a[aria-current="page"] {
 		border-bottom-color: var(--color-primary);
 	}
 
@@ -190,7 +195,7 @@
 	}
 
 	.navbar.scrolled .navbar-links a:hover,
-	.navbar.scrolled .navbar-links a[aria-current='page'] {
+	.navbar.scrolled .navbar-links a[aria-current="page"] {
 		border-bottom-color: var(--color-primary);
 	}
 
