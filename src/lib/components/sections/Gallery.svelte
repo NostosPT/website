@@ -6,21 +6,39 @@
 		alt: string;
 	};
 
-	// 12 fotos — 3 por row, alturas variadas naturais como Hugo Santos (sem grelha rígida, masonry com gap mínimo)
-	const photos: Photo[] = [
-		{ src: '/images/hero.jpg', alt: 'Eléctrico ao anoitecer — Lisboa' },
-		{ src: 'https://picsum.photos/seed/nostos2/700/900', alt: 'Rua de Lisboa — manhã' },
-		{ src: 'https://picsum.photos/seed/nostos3/900/700', alt: 'Detalhe urbano' },
-		{ src: 'https://picsum.photos/seed/nostos4/700/700', alt: 'Retrato espontâneo' },
-		{ src: 'https://picsum.photos/seed/nostos5/700/1000', alt: 'Noite, chuva em Alfama' },
-		{ src: 'https://picsum.photos/seed/nostos6/900/600', alt: 'Mercado da manhã' },
-		{ src: 'https://picsum.photos/seed/nostos7/700/800', alt: 'Cais — espera' },
-		{ src: 'https://picsum.photos/seed/nostos8/700/950', alt: 'Janela com roupa' },
-		{ src: 'https://picsum.photos/seed/nostos9/800/800', alt: 'Sombra e luz' },
-		{ src: 'https://picsum.photos/seed/nostos10/900/650', alt: 'Eléctrico 28' },
-		{ src: 'https://picsum.photos/seed/nostos11/700/850', alt: 'Passageiros' },
-		{ src: 'https://picsum.photos/seed/nostos12/700/920', alt: 'Rua vazia' }
+	// 15 fotos locais — ordem aleatória baralhada no cliente
+	const rawPhotos: Photo[] = [
+		{ src: '/galeria/_MG_0665.jpg', alt: 'Nostos — _MG_0665' },
+		{ src: '/galeria/_MG_0670.jpg', alt: 'Nostos — _MG_0670' },
+		{ src: '/galeria/_MG_0686.jpg', alt: 'Nostos — _MG_0686' },
+		{ src: '/galeria/_MG_0747.jpg', alt: 'Nostos — _MG_0747' },
+		{ src: '/galeria/_MG_1090.jpg', alt: 'Nostos — _MG_1090' },
+		{ src: '/galeria/_MG_1131.jpg', alt: 'Nostos — _MG_1131' },
+		{ src: '/galeria/_MG_1155.jpg', alt: 'Nostos — _MG_1155' },
+		{ src: '/galeria/_MG_1232.jpg', alt: 'Nostos — _MG_1232' },
+		{ src: '/galeria/_MG_1245.jpg', alt: 'Nostos — _MG_1245' },
+		{ src: '/galeria/IMG_3405.webp', alt: 'Nostos — IMG_3405' },
+		{ src: '/galeria/IMG_4471.webp', alt: 'Nostos — IMG_4471' },
+		{ src: '/galeria/IMG_4474.webp', alt: 'Nostos — IMG_4474' },
+		{ src: '/galeria/IMG_4482.webp', alt: 'Nostos — IMG_4482' },
+		{ src: '/galeria/IMG_4486.webp', alt: 'Nostos — IMG_4486' },
+		{ src: '/galeria/IMG_4487.jpg', alt: 'Nostos — IMG_4487' }
 	];
+
+	function shuffle<T>(arr: T[]): T[] {
+		const a = [...arr];
+		for (let i = a.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[a[i], a[j]] = [a[j], a[i]];
+		}
+		return a;
+	}
+
+	let photos: Photo[] = $state(rawPhotos);
+	// baralha uma vez no cliente
+	$effect(() => {
+		photos = shuffle(rawPhotos);
+	});
 
 	let active: string | null = $state(null);
 	let activeAlt = $state('');
@@ -32,7 +50,7 @@
 			<p class="eyebrow">Galeria — Seleção editorial</p>
 			<h2 id="galeria-heading" class="gallery-title">Um arquivo vivo.</h2>
 			<p class="gallery-desc">
-				12 fotografias. Diferentes formatos, momentos e histórias, reunidos num arquivo em constante construção.
+				15 fotografias. Diferentes formatos, momentos e histórias, reunidos num arquivo em constante construção.
 			</p>
 		</header>
 
@@ -134,14 +152,17 @@
 		width: 100%;
 		height: auto;
 		display: block;
+		filter: grayscale(1);
 		transition:
 			opacity 280ms ease,
-			filter 280ms ease,
+			filter 380ms ease,
 			transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.ph:hover img {
-		opacity: 0.86;
+	.ph:hover img,
+	.ph:focus-visible img {
+		opacity: 1;
+		filter: grayscale(0);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

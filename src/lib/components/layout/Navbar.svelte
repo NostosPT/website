@@ -142,8 +142,6 @@
 		transition: color 0.35s ease;
 	}
 
-	/* When not scrolled, brand-sub sits over white panel -> muted is correct.
-	   When scrolled, it should stay muted but inside blur bar, still muted. */
 	.scrolled .brand-sub {
 		color: var(--muted);
 	}

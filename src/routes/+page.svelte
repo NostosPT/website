@@ -6,20 +6,6 @@
 	import Footer from '$lib/components/layout/Footer.svelte';
 </script>
 
-<svelte:head>
-	<title>Nostos — Photography Studio</title>
-	<meta
-		name="description"
-		content="Nostos — photography studio and street photography brand. Quiet frames from the city, and the long way home. Lisbon."
-	/>
-	<meta property="og:title" content="Nostos — Photography Studio" />
-	<meta
-		property="og:description"
-		content="Quiet frames from the city, and the long way home. Film, darkroom prints, Lisbon."
-	/>
-	<meta property="og:type" content="website" />
-</svelte:head>
-
 <a class="skip-link" href="#main">Skip to content</a>
 
 <Navbar links={[]} />

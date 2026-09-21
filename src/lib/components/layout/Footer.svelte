@@ -7,39 +7,51 @@
 		<div class="footer-brand">
 			<span class="footer-mark">Nostos</span>
 			<p class="footer-tagline">
-				Quiet frames, meaningful stories, and the long way home.<br />Lisbon — and the places around it.
+				Quiet frames, meaningful stories, and the long way home.<br
+				/>Lisbon — and the places around it.
 			</p>
 		</div>
 
 		<nav class="footer-nav" aria-label="Footer">
 			<div class="footer-col">
-				<p class="footer-kicker">Studio</p>
+				<p class="footer-kicker">Contact</p>
 				<p class="footer-address">
-					Rua da Prata 12<br />
-					1100-420 Lisboa<br />
 					<a href="mailto:hello@nostos.studio">hello@nostos.studio</a>
 				</p>
 			</div>
 			<div class="footer-col">
 				<p class="footer-kicker">Follow</p>
 				<ul>
-					<li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-					<li><a href="mailto:hello@nostos.studio">Email</a></li>
+					<li>
+						<a
+							href="https://instagram.com"
+							target="_blank"
+							rel="noreferrer">Instagram</a
+						>
+					</li>
 				</ul>
 			</div>
 			<div class="footer-col">
 				<p class="footer-kicker">Info</p>
 				<ul>
-					<li><a href="mailto:hello@nostos.studio">Prints &amp; enquiries</a></li>
-					<li><span class="footer-muted">Available for assignments</span></li>
+					<li>
+						<a href="mailto:hello@nostos.studio"
+							>Prints &amp; enquiries</a
+						>
+					</li>
+					<li>
+						<span class="footer-muted">About Nostos</span>
+					</li>
 				</ul>
 			</div>
 		</nav>
 	</div>
 
 	<div class="footer-bottom">
-		<p>© {year} Nostos Photography Studio. All rights reserved.</p>
-		<p class="footer-legal">No trackers. No ad cookies. Just photography.</p>
+		<p>© {year} Nostos. All rights reserved.</p>
+		<p class="footer-legal">
+			No trackers. No ad cookies. Just photography.
+		</p>
 	</div>
 </footer>
 

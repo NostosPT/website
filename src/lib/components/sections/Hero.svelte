@@ -21,13 +21,13 @@
 	let lightbox = $state(false);
 </script>
 
-<header class="hero">
-	<!-- Background photograph -->
+<header class="hero" style:--hero-photo="url('{photo}')">
+	<!-- Hero image with mask fade — white to image -->
 	<div
-		class="photo"
+		class="hero-image"
 		role="img"
-		aria-label="A tram at night in a city street, in black and white"
-		style:background-image="url('{photo}')"
+		aria-label="A tram at night in a city street"
+		aria-hidden="true"
 	></div>
 
 	<!-- Blurred overlay with rectangular hole -->
@@ -43,10 +43,10 @@
 		<Viewfinder {settings} />
 	</button>
 
-	<!-- Subtle top veil — lighter per P1 -->
+	<!-- Subtle top veil -->
 	<div class="top-veil" aria-hidden="true"></div>
 
-	<!-- Left white panel -->
+	<!-- Left panel — text over hero-image white fade -->
 	<div class="panel">
 		<div aria-hidden="true"></div>
 		<div class="panel-copy">
@@ -69,7 +69,12 @@
 	</a>
 </header>
 
-<Lightbox src={photo} alt="Tram at night" open={lightbox} onclose={() => (lightbox = false)} />
+<Lightbox
+	src={photo}
+	alt="Tram at night"
+	open={lightbox}
+	onclose={() => (lightbox = false)}
+/>
 
 <style>
 	.hero {
@@ -80,25 +85,47 @@
 			var(--panel-w) + (100vw - var(--panel-w) - var(--win-w)) / 2 +
 				clamp(0.75rem, 1.6vw, 1.75rem)
 		);
-		--win-top: calc((100svh - var(--win-h)) / 2);
+		--win-top: calc((100svh - var(--win-h)) / 2 + 4vh);
 		--photo-zoom: 150%;
-		--photo-pos: 44% 100%;
+		--photo-pos: 45% 98%;
 
 		position: relative;
 		height: 100vh;
 		height: 100svh;
 		min-height: 480px;
 		overflow: hidden;
-		background: #888;
+		background: #fcfcfc;
 	}
 
-	.photo {
+	.hero-image {
 		position: absolute;
 		inset: 0;
-		background-color: #5a5a5a;
+		background-image: var(--hero-photo);
 		background-position: var(--photo-pos);
 		background-size: auto var(--photo-zoom);
 		background-repeat: no-repeat;
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			transparent 8%,
+			rgba(0, 0, 0, 0.06) 16%,
+			rgba(0, 0, 0, 0.2) 24%,
+			rgba(0, 0, 0, 0.45) 34%,
+			rgba(0, 0, 0, 0.72) 44%,
+			rgba(0, 0, 0, 0.92) 54%,
+			black 65%
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			transparent 8%,
+			rgba(0, 0, 0, 0.06) 16%,
+			rgba(0, 0, 0, 0.2) 24%,
+			rgba(0, 0, 0, 0.45) 34%,
+			rgba(0, 0, 0, 0.72) 44%,
+			rgba(0, 0, 0, 0.92) 54%,
+			black 65%
+		);
 	}
 
 	.lens-unit {
@@ -233,34 +260,8 @@
 		padding: clamp(4.5rem, 9vw, 6rem) 0 clamp(1.75rem, 4vw, 2.5rem);
 		padding-left: calc(var(--gutter) * 0.66);
 		padding-right: calc(var(--panel-w) * 0.2);
-		background: linear-gradient(
-			to right in oklab,
-			#fff 0%,
-			#fff 40%,
-			rgba(255, 255, 255, 0.92) 52%,
-			rgba(255, 255, 255, 0.68) 62%,
-			rgba(255, 255, 255, 0.38) 74%,
-			rgba(255, 255, 255, 0.14) 86%,
-			rgba(255, 255, 255, 0) 100%
-		);
+		background: transparent;
 		z-index: 2;
-	}
-
-	@supports not (
-		background: linear-gradient(to right in oklab, #fff, transparent)
-	) {
-		.panel {
-			background: linear-gradient(
-				to right,
-				#fff 0%,
-				#fff 40%,
-				rgba(255, 255, 255, 0.92) 52%,
-				rgba(255, 255, 255, 0.68) 62%,
-				rgba(255, 255, 255, 0.38) 74%,
-				rgba(255, 255, 255, 0.14) 86%,
-				rgba(255, 255, 255, 0) 100%
-			);
-		}
 	}
 
 	.brand {
@@ -321,7 +322,6 @@
 		border: 0;
 	}
 
-	/* ── Scroll cue — bottom-right, vertical ── */
 	.scroll-cue {
 		position: absolute;
 		right: clamp(1.25rem, 3vw, 2.5rem);
@@ -418,7 +418,6 @@
 		}
 	}
 
-	/* Tablet */
 	@media (min-width: 761px) and (max-width: 1024px) {
 		.hero {
 			--panel-w: clamp(24rem, 42vw, 34rem);
@@ -426,13 +425,13 @@
 		}
 	}
 
-	/* Mobile — tuned for long Portuguese copy, lens a touch more right */
 	@media (max-width: 760px) {
 		.hero {
-			--photo-pos: 56% 100%;
+			--photo-pos: 50% 88%;
 			--panel-w: min(70vw, 19.5rem);
 			--win-w: 56vw;
 			--win-left: calc((100vw - var(--win-w)) / 2 + 0.6rem);
+			--win-top: calc((100svh - var(--win-h)) / 2 + 2.5vh);
 			--gutter: 1.5rem;
 		}
 
@@ -440,31 +439,6 @@
 			padding: clamp(3.5rem, 12vw, 4.5rem) 0 1.25rem;
 			padding-left: calc(var(--gutter) * 0.66);
 			padding-right: calc(var(--panel-w) * 0.12);
-			background: linear-gradient(
-				to right in oklab,
-				#fff 0%,
-				#fff 40%,
-				rgba(255, 255, 255, 0.9) 54%,
-				rgba(255, 255, 255, 0.62) 68%,
-				rgba(255, 255, 255, 0.28) 82%,
-				rgba(255, 255, 255, 0) 100%
-			);
-		}
-
-		@supports not (
-			background: linear-gradient(to right in oklab, #fff, transparent)
-		) {
-			.panel {
-				background: linear-gradient(
-					to right,
-					#fff 0%,
-					#fff 40%,
-					rgba(255, 255, 255, 0.9) 54%,
-					rgba(255, 255, 255, 0.62) 68%,
-					rgba(255, 255, 255, 0.28) 82%,
-					rgba(255, 255, 255, 0) 100%
-				);
-			}
 		}
 
 		.brand {
