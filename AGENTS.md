@@ -21,5 +21,10 @@ These instructions apply strictly to all AI models, agents, and automated tools 
 - **Under no circumstances should any co-author be added by the agent.**
 - Do not append `Co-authored-by:` or any assistant attribution trailers to git commits.
 
-## 5. Enforcement
+## 5. Feature-Based Directory Organization
+- **Organize code using feature directories**: Group functions, utilities, and components into dedicated directories named after the feature or domain they serve.
+- **Group related functions**: If a function or set of functions can be grouped inside a feature folder, it must be done rather than leaving them in flat or catch-all files.
+- **Self-explanatory navigation**: The source structure must be intuitive and easy to navigate and understand from folder names alone, without having to inspect file contents.
+
+## 6. Enforcement
 - Git hooks in `.githooks/` (`pre-commit` and `commit-msg`) enforce these rules automatically at the git level.

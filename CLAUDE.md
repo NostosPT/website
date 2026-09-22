@@ -6,4 +6,5 @@
 - **Granular commits**: Commit frequently and incrementally as logical tasks are completed.
 - **Single-line commits only**: Every commit message must be strictly one line, brief and direct (e.g. `feat: description`, `fix: description`). No multi-line bodies.
 - **No co-authors**: Under no circumstances should any co-author (`Co-authored-by:`) or AI attribution be added to commit messages.
+- **Feature-based directory organization**: Organize code using directories grouped by feature or domain. If functions can be grouped in a feature folder, do so. Make the source tree intuitive to navigate without opening files.
 - **Enforcement**: Repository hooks in `.githooks/` actively validate branch and commit message constraints.
