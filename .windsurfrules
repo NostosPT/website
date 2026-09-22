@@ -1,0 +1,7 @@
+# Windsurf Rules & Agent Boundaries
+
+- **Never modify or commit to `main` directly**: Always check out `develop` or a dedicated feature branch.
+- **Granular commits**: Commit step-by-step as logical milestones are reached.
+- **Single-line commit messages**: Commit messages must be strictly one line, brief and direct.
+- **Strictly no co-authors**: Under no circumstances should `Co-authored-by:` or agent credits be added.
+- Git hooks in `.githooks/` strictly enforce these policies.
