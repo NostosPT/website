@@ -1,7 +1,7 @@
 # Windsurf Rules & Agent Boundaries
 
 - **Never modify or commit to `main` directly**: Always check out `develop` or a dedicated feature branch.
-- **Granular commits**: Commit step-by-step as logical milestones are reached.
+- **High-frequency granular commits**: Commit step-by-step with high frequency. Commits should not contain more than 1 or 2 files. Commit incrementally as files are modified.
 - **Single-line commit messages**: Commit messages must be strictly one line, brief and direct.
 - **Strictly no co-authors**: Under no circumstances should `Co-authored-by:` or agent credits be added.
 - **Directory organization**: Organize code using directories grouped by feature. If functions can be grouped inside a feature folder, do so. Keep the source tree intuitive to navigate without opening files.
