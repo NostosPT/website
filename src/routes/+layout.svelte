@@ -3,6 +3,8 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { metadata } from '$lib/metadata';
 	import ProtectImages from '$lib/components/ui/ProtectImages.svelte';
+	import Navbar from '$lib/components/layout/Navbar.svelte';
+	import Footer from '$lib/components/layout/Footer.svelte';
 
 	let { children } = $props();
 </script>
@@ -41,4 +43,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 </svelte:head>
 <ProtectImages />
+<a class="skip-link" href="#main">Skip to content</a>
+<Navbar />
+
 {@render children()}
+
+<Footer />

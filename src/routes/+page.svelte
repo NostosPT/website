@@ -2,13 +2,7 @@
 	import Hero from '$lib/components/sections/Hero.svelte';
 	import Gallery from '$lib/components/sections/Gallery.svelte';
 	import QuoteSection from '$lib/components/sections/QuoteSection.svelte';
-	import Navbar from '$lib/components/layout/Navbar.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
 </script>
-
-<a class="skip-link" href="#main">Skip to content</a>
-
-<Navbar links={[]} />
 
 <Hero photo="/images/hero.jpg" />
 
@@ -16,8 +10,6 @@
 	<Gallery />
 	<QuoteSection />
 </main>
-
-<Footer />
 
 <style>
 	:global(html) {

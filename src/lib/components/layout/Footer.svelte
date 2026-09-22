@@ -35,12 +35,18 @@
 				<p class="footer-kicker">Info</p>
 				<ul>
 					<li>
-						<a href="mailto:hello@nostos.studio"
-							>Prints &amp; enquiries</a
+						<span class="footer-muted">About Nostos</span>
+					</li>
+					<li>
+						<a href="/politica-de-privacidade"
+							>Política de privacidade</a
 						>
 					</li>
 					<li>
-						<span class="footer-muted">About Nostos</span>
+						<a href="/politica-de-cookies">Política de cookies</a>
+					</li>
+					<li>
+						<a href="/termos-e-condicoes">Termos e condições</a>
 					</li>
 				</ul>
 			</div>
@@ -50,7 +56,11 @@
 	<div class="footer-bottom">
 		<p>© {year} Nostos. All rights reserved.</p>
 		<p class="footer-legal">
-			No trackers. No ad cookies. Just photography.
+			No trackers. No ad cookies. Just photography. · <a href="/politica-de-privacidade"
+				>Política de privacidade</a
+			> · <a href="/politica-de-cookies">Política de cookies</a> · <a href="/termos-e-condicoes"
+				>Termos e condições</a
+			>
 		</p>
 	</div>
 </footer>
@@ -174,5 +184,19 @@
 
 	.footer-bottom p {
 		margin: 0;
+	}
+
+	.footer-legal a {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition:
+			color 0.2s,
+			border-color 0.2s;
+	}
+
+	.footer-legal a:hover {
+		color: #f0efec;
+		border-bottom-color: var(--color-accent);
 	}
 </style>

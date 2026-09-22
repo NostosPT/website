@@ -6,15 +6,7 @@
 		activeId?: string;
 	};
 
-	let {
-		links = [
-			{ label: "Work", href: "#work" },
-			{ label: "Journal", href: "#journal" },
-			{ label: "Studio", href: "#studio" },
-			{ label: "Contact", href: "#contact" },
-		],
-		activeId,
-	}: Props = $props();
+	let { links = [], activeId }: Props = $props();
 
 	let scrolled = $state(false);
 
@@ -42,20 +34,22 @@
 			<span class="brand-sub">Photography</span>
 		</a>
 
-		<ul class="navbar-links">
-			{#each links as link (link.href)}
-				<li>
-					<a
-						href={link.href}
-						aria-current={activeId === link.href.replace("#", "")
-							? "page"
-							: undefined}
-					>
-						{link.label}
-					</a>
-				</li>
-			{/each}
-		</ul>
+		{#if links.length > 0}
+			<ul class="navbar-links">
+				{#each links as link (link.href)}
+					<li>
+						<a
+							href={link.href}
+							aria-current={activeId === link.href.replace("#", "")
+								? "page"
+								: undefined}
+						>
+							{link.label}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		{/if}
 	</div>
 </nav>
 
