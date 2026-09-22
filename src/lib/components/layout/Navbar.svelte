@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/state';
+
 	type Link = { label: string; href: string };
 
 	type Props = {
@@ -11,26 +13,27 @@
 	let scrolled = $state(false);
 
 	$effect(() => {
-		if (typeof window === "undefined") return;
+		if (typeof window === 'undefined') return;
 
 		const onScroll = () => {
 			scrolled = window.scrollY > 8;
 		};
 
-		// init
 		onScroll();
-		window.addEventListener("scroll", onScroll, { passive: true });
-		return () => window.removeEventListener("scroll", onScroll);
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
 	});
+
+	let pathname = $derived(page.url.pathname);
+	let isLightPage = $derived(pathname !== '/');
+	let effectiveScrolled = $derived(isLightPage || scrolled);
 </script>
 
-<nav class="navbar" class:scrolled aria-label="Primary">
+<nav class="navbar" class:scrolled={effectiveScrolled} aria-label="Primary">
 	<div class="navbar-inner">
 		<a class="navbar-brand" href="/" aria-label="Nostos — home">
-			<span class="brand-mark" class:visible={scrolled}>Nostos</span>
-			<span class="brand-sep" class:visible={scrolled} aria-hidden="true"
-				>—</span
-			>
+			<span class="brand-mark" class:visible={effectiveScrolled}>Nostos</span>
+			<span class="brand-sep" class:visible={effectiveScrolled} aria-hidden="true">—</span>
 			<span class="brand-sub">Photography</span>
 		</a>
 
