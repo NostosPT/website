@@ -4,4 +4,5 @@
 - **Granular commits**: Commit step-by-step as logical milestones are reached.
 - **Single-line commit messages**: Commit messages must be strictly one line, brief and direct.
 - **Strictly no co-authors**: Under no circumstances should `Co-authored-by:` or agent credits be added.
+- **Directory organization**: Organize code using directories grouped by feature. If functions can be grouped inside a feature folder, do so. Keep the source tree intuitive to navigate without opening files.
 - Git hooks in `.githooks/` strictly enforce these policies.
