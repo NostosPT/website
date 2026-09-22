@@ -8,9 +8,11 @@ These instructions apply strictly to all AI models, agents, and automated tools 
 - All work must take place on dedicated branches (e.g. `develop` or feature/fix branches like `feat/*`, `fix/*`, `chore/*`).
 - Always verify the current branch (`git branch --show-current`) before writing code or committing.
 
-## 2. Granular Commits
-- Commit progress granularly and accordingly as logical increments of work are completed.
-- Do not accumulate large batches of unrelated changes into a single commit.
+## 2. High-Frequency & Granular Commits (Max 1-2 Files)
+- Commit progress with high frequency as logical increments of work are completed.
+- **Maximum 1-2 files per commit**: A commit should not contain more than 1 or 2 files (something around that scope).
+- Do not accumulate large batches of changes or multiple files into a single commit.
+- Stage and commit changes incrementally as each individual file, component, or utility is modified rather than waiting until the end of a task.
 
 ## 3. Single-Line Commit Messages
 - **Every commit message must be exactly one line.**
