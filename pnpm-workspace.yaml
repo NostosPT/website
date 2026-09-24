@@ -1,2 +1,4 @@
 onlyBuiltDependencies:
   - esbuild
+patchedDependencies:
+  '@nostospt/ui@0.1.0': patches/@nostospt__ui@0.1.0.patch
