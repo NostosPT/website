@@ -97,10 +97,11 @@ class InvoiceStore {
 		return doc;
 	}
 
+	/** Updates in place so pages holding the document keep a live reference. */
 	save(doc: FinanceDocument) {
-		const index = this.items.findIndex((d) => d.id === doc.id);
+		const existing = this.get(doc.id);
 		const next = { ...doc, updatedAt: new Date().toISOString() };
-		if (index >= 0) this.items[index] = next;
+		if (existing) Object.assign(existing, next);
 		else this.items.unshift(next);
 	}
 
@@ -113,7 +114,14 @@ class InvoiceStore {
 		if (!doc) return;
 		const { prefix } = documentTypes[doc.type];
 		const year = new Date().getFullYear();
-		const seq = this.items.filter((d) => d.type === doc.type && d.number?.includes(`${year}/`)).length + 1;
+		// Continue the series: the provider numbers sequentially per type and year.
+		const seq =
+			Math.max(
+				0,
+				...this.items
+					.filter((d) => d.type === doc.type && d.number?.startsWith(`${prefix} ${year}/`))
+					.map((d) => Number(d.number!.split('/')[1]))
+			) + 1;
 		Object.assign(doc, {
 			number: `${prefix} ${year}/${seq}`,
 			status: 'ISSUED',
