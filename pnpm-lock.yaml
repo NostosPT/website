@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@nostospt/ui@0.1.0': 3731145cf140421b4320ac5f6c953f93a932d17b4b70f00aabe729b77f16b0c2
+
 importers:
 
   .:
@@ -13,7 +16,7 @@ importers:
         version: 10.0.1(eslint@10.11.0(jiti@2.7.0))
       '@nostospt/ui':
         specifier: ^0.1.0
-        version: 0.1.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))
+        version: 0.1.0(patch_hash=3731145cf140421b4320ac5f6c953f93a932d17b4b70f00aabe729b77f16b0c2)(svelte@5.57.1(@typescript-eslint/types@8.70.0))
       '@sveltejs/adapter-auto':
         specifier: ^7.0.1
         version: 7.0.1(@sveltejs/kit@2.70.3(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))(vite@8.3.0(@types/node@22.20.4)(jiti@2.7.0)))(svelte@5.57.1(@typescript-eslint/types@8.70.0))(typescript@6.0.3)(vite@8.3.0(@types/node@22.20.4)(jiti@2.7.0)))
@@ -1266,7 +1269,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@nostospt/ui@0.1.0(svelte@5.57.1(@typescript-eslint/types@8.70.0))':
+  '@nostospt/ui@0.1.0(patch_hash=3731145cf140421b4320ac5f6c953f93a932d17b4b70f00aabe729b77f16b0c2)(svelte@5.57.1(@typescript-eslint/types@8.70.0))':
     dependencies:
       svelte: 5.57.1(@typescript-eslint/types@8.70.0)
 
