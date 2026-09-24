@@ -49,6 +49,8 @@ export const generateAccessCode = () => `${random(3, 'ABCDEFGHJKMNPQRSTUVWXYZ234
  */
 class GalleryStore {
 	items = $state<Gallery[]>(seed);
+	/** Plain codes generated this session, shown once; the API keeps only the hash. */
+	revealedCodes = $state<Record<string, string>>({});
 
 	get(id: string | null | undefined): Gallery | undefined {
 		return id ? this.items.find((g) => g.id === id) : undefined;
@@ -93,7 +95,9 @@ class GalleryStore {
 			updatedAt: now
 		};
 		this.items.unshift(gallery);
-		return { gallery, code: withCode ? generateAccessCode() : null };
+		const code = withCode ? generateAccessCode() : null;
+		if (code) this.revealedCodes[gallery.id] = code;
+		return { gallery, code };
 	}
 
 	update(id: string, patch: Partial<Omit<Gallery, 'id'>>) {
@@ -123,7 +127,10 @@ class GalleryStore {
 	/** Sets a fresh code (returned once) or removes it for link-only access. */
 	setAccessCode(id: string, enabled: boolean): string | null {
 		this.update(id, { hasAccessCode: enabled });
-		return enabled ? generateAccessCode() : null;
+		const code = enabled ? generateAccessCode() : null;
+		if (code) this.revealedCodes[id] = code;
+		else delete this.revealedCodes[id];
+		return code;
 	}
 
 	remove(id: string) {
