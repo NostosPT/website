@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { Breadcrumb, Button, Menu, MenuItem } from '@nostospt/ui';
+	import { Breadcrumb, Button, Menu, MenuItem, Spinner } from '@nostospt/ui';
 	import { breadcrumbsFor, createActions } from '$lib/admin/navigation/nav';
 	import NotificationsPopover from '$lib/admin/notifications/NotificationsPopover.svelte';
 	import ThemeMenu from '$lib/admin/theme/ThemeMenu.svelte';
+	import { uploads } from '$lib/admin/uploads/queue.svelte';
 	import { pageContext } from './page-context.svelte';
 
 	let { onmenu, onsearch }: { onmenu: () => void; onsearch: () => void } = $props();
 
 	let crumbs = $derived(breadcrumbsFor(page.url.pathname, pageContext.detailLabel));
+	let uploadPercent = $derived(
+		uploads.totalBytes ? Math.round((uploads.sentBytes / uploads.totalBytes) * 100) : 0
+	);
 </script>
 
 <header class="topbar">
@@ -30,6 +34,12 @@
 		<span class="mobile-only">
 			<Button variant="ghost" tone="neutral" iconOnly icon="search" label="Search" onclick={onsearch} />
 		</span>
+		{#if uploads.busy && page.url.pathname !== '/admin/uploads'}
+			<a class="uploading" href="/admin/uploads">
+				<Spinner size={14} label="Uploading" />
+				Uploading · {uploadPercent}%
+			</a>
+		{/if}
 		<Menu ariaLabel="Create">
 			{#snippet trigger({ toggle }: { toggle: () => void })}
 				<Button size="sm" icon="plus" trailingIcon="chevron-down" onclick={toggle}>New</Button>
@@ -66,6 +76,22 @@
 		align-items: center;
 		gap: var(--ui-space-4);
 		min-width: 0;
+	}
+	.uploading {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--ui-space-4);
+		padding: 0 var(--ui-space-6);
+		height: var(--ui-control-h-sm);
+		font-size: var(--ui-text-sm);
+		color: var(--ui-fg-muted);
+		text-decoration: none;
+		border: 1px solid var(--ui-border-default);
+		border-radius: var(--ui-control-radius-sm);
+	}
+	.uploading:hover {
+		color: var(--ui-fg-default);
+		border-color: var(--ui-border-strong);
 	}
 	.mobile-only {
 		display: none;

@@ -50,7 +50,7 @@
 	}
 </script>
 
-<Sidebar bind:collapsed variant="subtle" class="app-sidebar">
+<Sidebar bind:collapsed variant="subtle">
 	<SidebarHeader>
 		{#snippet logo()}<span class="monogram" aria-hidden="true">N</span>{/snippet}
 		<a class="wordmark" href="/admin">
@@ -126,14 +126,6 @@
 </Sidebar>
 
 <style>
-	:global(.app-sidebar) {
-		position: sticky;
-		top: 0;
-		height: 100dvh;
-		min-height: 0;
-		overflow-y: auto;
-		overscroll-behavior: contain;
-	}
 	.monogram {
 		font: 400 17px/1 var(--ui-font-serif);
 	}
