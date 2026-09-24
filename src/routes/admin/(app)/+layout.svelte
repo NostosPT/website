@@ -4,6 +4,7 @@
 	import AppSidebar from '$lib/admin/shell/AppSidebar.svelte';
 	import CommandPalette from '$lib/admin/shell/CommandPalette.svelte';
 	import Topbar from '$lib/admin/shell/Topbar.svelte';
+	import { uploads } from '$lib/admin/uploads/queue.svelte';
 
 	let { children } = $props();
 
@@ -23,6 +24,13 @@
 		drawerOpen = false;
 	});
 </script>
+
+<!-- Uploads keep running across pages, but not across a reload. -->
+<svelte:window
+	onbeforeunload={(event) => {
+		if (uploads.busy) event.preventDefault();
+	}}
+/>
 
 <div class="shell" data-drawer-open={drawerOpen || undefined}>
 	<div class="nav">
@@ -53,6 +61,15 @@
 		grid-template-columns: auto minmax(0, 1fr);
 		min-height: 100dvh;
 	}
+	/* Sticky here, on our own element: the kit's scoped sidebar styles outrank overrides. */
+	.nav {
+		position: sticky;
+		top: 0;
+		align-self: start;
+		height: 100dvh;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
 	.main {
 		display: flex;
 		flex-direction: column;
@@ -76,6 +93,7 @@
 		}
 		.nav {
 			position: fixed;
+			height: auto;
 			inset: 0 auto 0 0;
 			z-index: var(--ui-z-overlay);
 			transform: translateX(-100%);
