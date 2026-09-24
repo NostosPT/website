@@ -126,6 +126,8 @@ declare module '@nostospt/ui' {
 	export function dismissAllToasts(): void;
 
 	// utilities
+	export const COUNTRIES: { iso: string; name: string; dial: string }[];
+	export function flagOf(iso: string): string;
 	export const icons: Record<string, string>;
 	export const iconNames: string[];
 	export function cx(...values: unknown[]): string;
