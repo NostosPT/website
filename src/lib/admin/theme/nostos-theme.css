@@ -1,0 +1,136 @@
+/* ============================================================================
+   NOSTOS × @nostospt/ui
+   ----------------------------------------------------------------------------
+   Maps the brand (docs/brand/COLORS.md, TYPOGRAPHY.md) onto the kit's tokens.
+   Components never change; only inputs and semantic tokens are overridden.
+
+   Selectors carry `.ui-root.nostos-admin[data-ui-theme]` so they outrank the
+   kit's own `.ui-root` / `[data-ui-theme]` blocks regardless of load order.
+
+   Accent: the brand primary #798F78 sits at 62.6% OKLCH lightness, inside the
+   band where neither white nor dark labels reach 4.5:1. Solid fills therefore
+   use the kit's 53% step on the brand hue (a deeper sage), while the exact
+   brand tones carry borders, selection and focus, where contrast allows it.
+   ========================================================================= */
+
+.ui-root.nostos-admin {
+	/* --- palette inputs: brand hue 144 (#798F78), deliberately low chroma -- */
+	--ui-accent-h: 144;
+	--ui-accent-c: 0.05;
+	--ui-neutral-h: 144;
+	--ui-neutral-c: 0.01;
+
+	/* Status colours stay functional but muted: no neon next to photographs. */
+	--ui-success-h: 152;
+	--ui-success-c: 0.11;
+	--ui-warning-h: 70;
+	--ui-warning-c: 0.13;
+	--ui-danger-h: 27;
+	--ui-danger-c: 0.15;
+	--ui-info-h: 235;
+	--ui-info-c: 0.08;
+	--ui-purple-h: 300;
+	--ui-purple-c: 0.09;
+
+	/* --- shape: the site is square; keep only a hint of softening -------- */
+	--ui-radius-scale: 0.25;
+
+	/* --- type: Lora for editorial headings, Raleway for everything else -- */
+	--ui-font-sans: 'Raleway', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--ui-font-serif: 'Lora', Georgia, Cambria, 'Times New Roman', serif;
+
+	/* Brand weights: Regular, Medium, SemiBold. No Bold. */
+	--ui-control-weight: var(--ui-weight-medium);
+	--ui-label-weight: var(--ui-weight-medium);
+	--ui-heading-weight: var(--ui-weight-medium);
+	--ui-numeric-weight: var(--ui-weight-medium);
+
+	/* Raleway defaults to old-style figures; tables need lining, tabular ones.
+	   Also replaces the kit's Inter-specific feature settings. */
+	font-feature-settings: 'lnum' 1, 'tnum' 1;
+	font-variant-numeric: lining-nums tabular-nums;
+
+	/* Admin-only tokens used by feature components */
+	--nostos-kicker-tracking: 0.08em;
+	--nostos-photo-mat: var(--ui-bg-sunken);
+}
+
+/* --- light: the website's surfaces ---------------------------------------- */
+.ui-root.nostos-admin[data-ui-theme='light'] {
+	--ui-bg-canvas: #f6f7f6;
+	--ui-bg-surface: #fcfcfc;
+	--ui-bg-raised: #fcfcfc;
+	--ui-bg-sunken: #eef1ee;
+	--ui-bg-subtle: #f6f7f6;
+	--ui-bg-muted: #eef1ee;
+	--ui-bg-emphasis: #e2e8e2;
+	--ui-bg-inverse: #060606;
+	--ui-bg-hover: #f0f3f0;
+	--ui-bg-active: #e7ece7;
+	--ui-bg-selected: oklch(95% 0.014 144);
+
+	--ui-fg-default: #060606;
+	--ui-fg-muted: #5e6b5e; /* site --muted, darkened a step for 4.5:1 */
+	--ui-fg-subtle: #6e7c6e; /* site --muted */
+	--ui-fg-faint: #9aa79a; /* site --muted-2 */
+	--ui-fg-inverse: #fcfcfc;
+
+	--ui-border-subtle: #e7ece7;
+	--ui-border-default: #d6ded6;
+	--ui-border-strong: #b3c2b2; /* brand secondary, the site's rule colour */
+
+	--ui-accent-soft: oklch(95% 0.014 144);
+	--ui-accent-soft-hover: oklch(92.5% 0.02 144);
+	--ui-accent-border: #b3c2b2;
+	--ui-accent-ring: rgb(144 171 142 / 0.45); /* brand accent #90AB8E */
+
+	--ui-shadow-color: 120 12% 12%;
+}
+
+/* --- dark: a separate theme, not an inversion (COLORS.md › Dark Mode) ------
+   Built from the site footer: #060606 ground, warm off-white text, the
+   secondary green for supporting copy. Surfaces step up in lightness as they
+   come forward. */
+.ui-root.nostos-admin[data-ui-theme='dark'] {
+	--ui-bg-canvas: #080908;
+	--ui-bg-surface: #0e100e;
+	--ui-bg-raised: #151815;
+	--ui-bg-sunken: #050605;
+	--ui-bg-subtle: #121412;
+	--ui-bg-muted: #191c19;
+	--ui-bg-emphasis: #222622;
+	--ui-bg-inverse: #f0efec;
+	--ui-bg-overlay: rgb(0 0 0 / 0.62);
+	--ui-bg-hover: #171a17;
+	--ui-bg-active: #1e221e;
+	--ui-bg-selected: oklch(27% 0.022 144);
+
+	--ui-fg-default: #f0efec;
+	--ui-fg-muted: #b0b9af;
+	--ui-fg-subtle: #8a948a;
+	--ui-fg-faint: #5f685f;
+	--ui-fg-inverse: #060606;
+
+	--ui-border-subtle: #1a1e1a;
+	--ui-border-default: #242924;
+	--ui-border-strong: #353c35;
+
+	--ui-accent-soft: oklch(25% 0.02 144);
+	--ui-accent-soft-hover: oklch(29% 0.026 144);
+	--ui-accent-border: oklch(40% 0.03 144);
+	--ui-accent-text: #b3c2b2; /* brand secondary, as in the footer */
+	--ui-accent-ring: rgb(144 171 142 / 0.5);
+
+	--ui-shadow-color: 120 10% 2%;
+}
+
+/* Editorial headings, as on the site (and as the kit's next release does). */
+.ui-root.nostos-admin :is(h1, h2, h3, h4) {
+	font-family: var(--ui-font-serif);
+	letter-spacing: -0.015em;
+}
+
+.ui-root.nostos-admin ::selection {
+	background: #798f78;
+	color: #fcfcfc;
+}
