@@ -27,7 +27,7 @@ export const seedClients: Client[] = seeds.map(({ since, ...client }) => ({
 }));
 
 export const seedActivity: ClientActivity[] = [
-	{ id: 'act_1', clientId: 'cli_beatriz', kind: 'gallery', title: 'Completed their selection', body: '64 of 412 photos selected in “Quinta da Regaleira”.', href: '/admin/galleries/gal_regaleira', authorId: null, createdAt: minutesAgo(12) },
+	{ id: 'act_1', clientId: 'cli_beatriz', kind: 'gallery', title: 'Completed their selection', body: '7 of 13 photos selected in “Quinta da Regaleira”.', href: '/admin/galleries/gal_regaleira', authorId: null, createdAt: minutesAgo(12) },
 	{ id: 'act_2', clientId: 'cli_beatriz', kind: 'email', title: 'Wedding gallery — thank you!', body: null, href: '/admin/mail?thread=thr_beatriz', authorId: null, createdAt: minutesAgo(40) },
 	{ id: 'act_3', clientId: 'cli_beatriz', kind: 'gallery', title: 'Gallery shared', body: 'Link and access code sent.', href: '/admin/galleries/gal_regaleira', authorId: 'usr_ines', createdAt: daysAgo(6, 10) },
 	{ id: 'act_4', clientId: 'cli_beatriz', kind: 'invoice', title: 'Invoice FT 2026/38 paid', body: '€2,800.00', href: '/admin/invoices/inv_38', authorId: null, createdAt: daysAgo(20, 9) },

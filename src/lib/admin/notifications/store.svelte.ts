@@ -20,7 +20,7 @@ class NotificationStore {
 			id: 'ntf_1',
 			icon: 'heart',
 			title: 'Selection complete',
-			body: 'Beatriz & Nuno picked 64 photos in “Quinta da Regaleira”.',
+			body: 'Beatriz & Nuno picked 7 favourites in “Quinta da Regaleira”.',
 			href: '/admin/galleries/gal_regaleira',
 			createdAt: minutesAgo(12),
 			read: false
