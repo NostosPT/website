@@ -134,3 +134,10 @@
 	background: #798f78;
 	color: #fcfcfc;
 }
+
+/* --- host resets --------------------------------------------------------------
+   The site's Tailwind preflight zeroes every margin, which removes the UA's
+   `margin: auto` that centres a modal <dialog>. The kit's Modal relies on it. */
+.ui-root.nostos-admin dialog:modal {
+	margin: auto;
+}
