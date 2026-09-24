@@ -30,11 +30,11 @@ export const seedActivity: ClientActivity[] = [
 	{ id: 'act_1', clientId: 'cli_beatriz', kind: 'gallery', title: 'Completed their selection', body: '7 of 13 photos selected in “Quinta da Regaleira”.', href: '/admin/galleries/gal_regaleira', authorId: null, createdAt: minutesAgo(12) },
 	{ id: 'act_2', clientId: 'cli_beatriz', kind: 'email', title: 'Wedding gallery — thank you!', body: null, href: '/admin/mail?thread=thr_beatriz', authorId: null, createdAt: minutesAgo(40) },
 	{ id: 'act_3', clientId: 'cli_beatriz', kind: 'gallery', title: 'Gallery shared', body: 'Link and access code sent.', href: '/admin/galleries/gal_regaleira', authorId: 'usr_ines', createdAt: daysAgo(6, 10) },
-	{ id: 'act_4', clientId: 'cli_beatriz', kind: 'invoice', title: 'Invoice FT 2026/38 paid', body: '€2,800.00', href: '/admin/invoices/inv_38', authorId: null, createdAt: daysAgo(20, 9) },
+	{ id: 'act_4', clientId: 'cli_beatriz', kind: 'invoice', title: 'Invoice FT 2026/38 paid', body: '€2,952.00', href: '/admin/invoices/inv_38', authorId: null, createdAt: daysAgo(20, 9) },
 	{ id: 'act_5', clientId: 'cli_beatriz', kind: 'note', title: 'Note', body: 'Asked about an album for the parents. Follow up after selection.', href: null, authorId: 'usr_marta', createdAt: daysAgo(22, 17) },
 	{ id: 'act_6', clientId: 'cli_duarte', kind: 'request', title: 'Submitted a request', body: 'Automotive · Porsche 911 launch', href: '/admin/pipeline?request=req_031', authorId: null, createdAt: minutesAgo(48) },
 	{ id: 'act_7', clientId: 'cli_sal', kind: 'invoice', title: 'Invoice FT 2026/41 paid', body: '€1,845.00', href: '/admin/invoices/inv_41', authorId: null, createdAt: daysAgo(1, 16) },
-	{ id: 'act_8', clientId: 'cli_lumen', kind: 'email', title: 'Quote sent', body: 'OR 2026/12 · €1,450.00', href: '/admin/invoices/qt_12', authorId: 'usr_tomas', createdAt: daysAgo(2, 11) },
+	{ id: 'act_8', clientId: 'cli_lumen', kind: 'email', title: 'Quote sent', body: 'OR 2026/12 · €1,783.50', href: '/admin/invoices/qt_12', authorId: 'usr_tomas', createdAt: daysAgo(2, 11) },
 	{ id: 'act_9', clientId: 'cli_ana', kind: 'order', title: 'Ordered a print', body: 'Print A3 · Nº 412 “Yellow”', href: '/admin/orders', authorId: null, createdAt: daysAgo(2, 9) },
 	{ id: 'act_10', clientId: 'cli_lucas', kind: 'call', title: 'Call', body: 'Happy with the delivery; may book again for spring.', href: null, authorId: 'usr_rui', createdAt: daysAgo(58, 15) }
 ];
