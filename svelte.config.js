@@ -9,10 +9,7 @@ const config = {
 		runes: ({ filename }) => filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 	},
 	kit: {
-		adapter: adapter(),
-		csrf: {
-			checkOrigin: true
-		}
+		adapter: adapter()
 	}
 };
 
