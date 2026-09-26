@@ -4,25 +4,28 @@
 	type Photo = {
 		src: string;
 		alt: string;
+		id: string;
+		category: string;
+		date: string;
 	};
 
-	// 15 fotos — ordem fixa editorial
+	// 15 fotos — ordem fixa editorial (com metadados arquivísticos para caption)
 	const photos: Photo[] = [
-		{ src: '/galeria/_MG_0665.jpg', alt: 'Nostos — _MG_0665' },
-		{ src: '/galeria/_MG_0670.jpg', alt: 'Nostos — _MG_0670' },
-		{ src: '/galeria/_MG_0686.jpg', alt: 'Nostos — _MG_0686' },
-		{ src: '/galeria/_MG_0747.jpg', alt: 'Nostos — _MG_0747' },
-		{ src: '/galeria/_MG_1090.jpg', alt: 'Nostos — _MG_1090' },
-		{ src: '/galeria/_MG_1131.jpg', alt: 'Nostos — _MG_1131' },
-		{ src: '/galeria/_MG_1155.jpg', alt: 'Nostos — _MG_1155' },
-		{ src: '/galeria/_MG_1232.jpg', alt: 'Nostos — _MG_1232' },
-		{ src: '/galeria/_MG_1245.jpg', alt: 'Nostos — _MG_1245' },
-		{ src: '/galeria/IMG_3405.webp', alt: 'Nostos — IMG_3405' },
-		{ src: '/galeria/IMG_4471.webp', alt: 'Nostos — IMG_4471' },
-		{ src: '/galeria/IMG_4474.webp', alt: 'Nostos — IMG_4474' },
-		{ src: '/galeria/IMG_4482.webp', alt: 'Nostos — IMG_4482' },
-		{ src: '/galeria/IMG_4486.webp', alt: 'Nostos — IMG_4486' },
-		{ src: '/galeria/IMG_4487.jpg', alt: 'Nostos — IMG_4487' }
+		{ src: '/galeria/_MG_0665.jpg', alt: 'Nostos — _MG_0665', id: 'NST-0665', category: 'Urban', date: 'Mar 2024' },
+		{ src: '/galeria/_MG_0670.jpg', alt: 'Nostos — _MG_0670', id: 'NST-0670', category: 'Urban', date: 'Mar 2024' },
+		{ src: '/galeria/_MG_0686.jpg', alt: 'Nostos — _MG_0686', id: 'NST-0686', category: 'Landscape', date: 'Nov 2023' },
+		{ src: '/galeria/_MG_0747.jpg', alt: 'Nostos — _MG_0747', id: 'NST-0747', category: 'Portrait', date: 'Jan 2024' },
+		{ src: '/galeria/_MG_1090.jpg', alt: 'Nostos — _MG_1090', id: 'NST-1090', category: 'Wedding', date: 'Sept 2023' },
+		{ src: '/galeria/_MG_1131.jpg', alt: 'Nostos — _MG_1131', id: 'NST-1131', category: 'Event', date: 'Jun 2024' },
+		{ src: '/galeria/_MG_1155.jpg', alt: 'Nostos — _MG_1155', id: 'NST-1155', category: 'Automotive', date: 'May 2024' },
+		{ src: '/galeria/_MG_1232.jpg', alt: 'Nostos — _MG_1232', id: 'NST-1232', category: 'Landscape', date: 'Aug 2023' },
+		{ src: '/galeria/_MG_1245.jpg', alt: 'Nostos — _MG_1245', id: 'NST-1245', category: 'Portrait', date: 'Feb 2024' },
+		{ src: '/galeria/IMG_3405.webp', alt: 'Nostos — IMG_3405', id: 'NST-3405', category: 'Automotive', date: 'Jul 2024' },
+		{ src: '/galeria/IMG_4471.webp', alt: 'Nostos — IMG_4471', id: 'NST-4471', category: 'Urban', date: 'Apr 2024' },
+		{ src: '/galeria/IMG_4474.webp', alt: 'Nostos — IMG_4474', id: 'NST-4474', category: 'Portrait', date: 'Aug 2024' },
+		{ src: '/galeria/IMG_4482.webp', alt: 'Nostos — IMG_4482', id: 'NST-4482', category: 'Event', date: 'Oct 2023' },
+		{ src: '/galeria/IMG_4486.webp', alt: 'Nostos — IMG_4486', id: 'NST-4486', category: 'Wedding', date: 'Sept 2024' },
+		{ src: '/galeria/IMG_4487.jpg', alt: 'Nostos — IMG_4487', id: 'NST-4487', category: 'Landscape', date: 'Dec 2023' }
 	];
 
 	let activeIndex: number | null = $state(null);
@@ -42,12 +45,16 @@
 			{#each photos as p, i (p.src + i)}
 				<button
 					class="ph"
-					aria-label="Ampliar: {p.alt}"
+					aria-label="Ampliar: {p.alt} — {p.id} · {p.category} · {p.date}"
 					onclick={() => {
 						activeIndex = i;
 					}}
 				>
 					<img src={p.src} alt={p.alt} loading="lazy" decoding="async" />
+					<span class="ph-cap" aria-hidden="true">
+						<span class="ph-cap-id">{p.id}</span>
+						<span class="ph-cap-meta">{p.category} · {p.date}</span>
+					</span>
 				</button>
 			{/each}
 		</div>
@@ -148,14 +155,64 @@
 			transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
-	.ph:hover img,
+	.ph-cap {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.45rem 0.55rem;
+		background: linear-gradient(to top, rgba(6, 6, 6, 0.68), transparent);
+		opacity: 0;
+		transform: translateY(4px);
+		transition:
+			opacity 220ms ease,
+			transform 220ms ease;
+		pointer-events: none;
+	}
+
+	.ph-cap-id {
+		font: 600 0.62rem/1 var(--font-body);
+		letter-spacing: 0.06em;
+		color: #fcfcfc;
+		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+	}
+
+	.ph-cap-meta {
+		font: 500 0.58rem/1 var(--font-body);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: rgba(252, 252, 252, 0.88);
+		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+	}
+
+	@media (hover: hover) {
+		.ph:hover img {
+			opacity: 1;
+			filter: grayscale(0);
+		}
+		.ph:hover .ph-cap {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 	.ph:focus-visible img {
 		opacity: 1;
 		filter: grayscale(0);
 	}
 
+	.ph:focus-visible .ph-cap {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.ph img {
+		.ph img,
+		.ph-cap {
 			transition: none;
 		}
 	}

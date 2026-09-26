@@ -20,29 +20,55 @@
 <style>
 	.quote-section {
 		background: var(--color-background);
-		padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 2.75rem);
+		padding: clamp(3rem, 7vw, 5.5rem) clamp(1.25rem, 4vw, 2.75rem);
+		border-top: 1px solid var(--color-secondary);
 	}
 
 	.quote-inner {
-		max-width: 44rem;
+		max-width: var(--content-max);
 		margin: 0 auto;
-		text-align: center;
+		display: grid;
+		grid-template-columns: 1.15fr 0.85fr;
+		gap: clamp(2rem, 5vw, 4rem);
+		align-items: start;
+		text-align: left;
 	}
 
 	.quote-title {
 		margin: 0;
-		font: 400 clamp(1.6rem, 3vw, 2.15rem) / 1.25 var(--font-heading);
+		font: 400 clamp(1.6rem, 3vw, 2.2rem) / 1.2 var(--font-heading);
 		letter-spacing: -0.02em;
 		color: var(--color-text);
 		text-wrap: balance;
+		padding-right: 1rem;
+		border-right: 1px solid #eceee9;
 	}
 
 	.quote-body {
-		margin: 1.25rem auto 0;
-		max-width: 36rem;
-		font: 400 0.95rem/1.7 var(--font-body);
+		margin: 0;
+		align-self: center;
+		font: 400 0.92rem/1.7 var(--font-body);
 		color: var(--muted);
 		text-wrap: pretty;
+		padding-left: 0.85rem;
+		border-left: 1px solid var(--color-secondary);
+	}
+
+	@media (max-width: 860px) {
+		.quote-inner {
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+			text-align: left;
+		}
+		.quote-title {
+			border-right: 0;
+			padding-right: 0;
+			padding-bottom: 1rem;
+			border-bottom: 1px solid #eceee9;
+		}
+		.quote-body {
+			border-left: 1px solid var(--color-secondary);
+		}
 	}
 
 	@media (max-width: 520px) {
