@@ -117,7 +117,7 @@
 						</MenuItem>
 					{/each}
 					<MenuSeparator />
-					<MenuItem icon="external-link" href="/" target="_blank">View website</MenuItem>
+					<MenuItem icon="external-link" href="/" target="_blank" rel="noopener noreferrer">View website</MenuItem>
 					<MenuItem icon="arrow-left" tone="danger" onselect={signOut}>Sign out</MenuItem>
 				</Menu>
 			{/snippet}

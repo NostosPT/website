@@ -86,7 +86,7 @@
 			{#snippet trigger({ toggle }: { toggle: () => void })}
 				<Button variant="ghost" tone="neutral" iconOnly icon="more-horizontal" label="More actions" onclick={toggle} />
 			{/snippet}
-			<MenuItem icon="external-link" href={galleries.shareUrl(gallery)} target="_blank">Open as client</MenuItem>
+			<MenuItem icon="external-link" href={galleries.shareUrl(gallery)} target="_blank" rel="noopener noreferrer">Open as client</MenuItem>
 			{#if gallery.status === 'PUBLISHED'}
 				<MenuItem icon="eye-off" onselect={() => publish('DRAFT')}>Unshare</MenuItem>
 			{/if}
