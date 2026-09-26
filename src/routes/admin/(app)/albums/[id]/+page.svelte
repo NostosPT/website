@@ -45,6 +45,7 @@
 			icon="external-link"
 			href={`/archive/albums/${album.slug}`}
 			target="_blank"
+			rel="noopener noreferrer"
 			disabled={album.visibility === 'PRIVATE'}
 		>
 			View on site
