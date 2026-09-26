@@ -26,7 +26,7 @@
 						<a
 							href="https://instagram.com"
 							target="_blank"
-							rel="noreferrer">Instagram</a
+							rel="noopener noreferrer">Instagram</a
 						>
 					</li>
 				</ul>
