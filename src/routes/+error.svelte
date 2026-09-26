@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import SiteChrome from '$lib/components/layout/SiteChrome.svelte';
 
-	let { error, status } = $props<{ error: { message: string }; status: number }>();
+	let status = $derived(page.status);
+	let error = $derived(page.error);
 
 	let title = $derived(status === 404 ? 'Página não encontrada' : 'Algo correu mal');
 	let code = $derived(status);
@@ -17,34 +19,36 @@
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
-<main id="main" class="err-page">
-	<section class="err-inner" aria-labelledby="err-heading">
-		<p class="kicker">Erro {code} — Nostos</p>
+<SiteChrome>
+	<main id="main" class="err-page">
+		<section class="err-inner" aria-labelledby="err-heading">
+			<p class="kicker">Erro {code} — Nostos</p>
 
-		<div class="err-code" aria-hidden="true">{code}</div>
+			<div class="err-code" aria-hidden="true">{code}</div>
 
-		<h1 id="err-heading" class="err-title">{title}</h1>
-		<p class="err-desc">{message}</p>
+			<h1 id="err-heading" class="err-title">{title}</h1>
+			<p class="err-desc">{message}</p>
 
-		{#if status === 404}
-			<p class="err-note">
-				Verifica o endereço ou volta ao início. O arquivo público continua disponível a partir da página
-				inicial.
-			</p>
-		{/if}
-
-		<div class="err-actions">
-			<a href="/" class="err-btn err-btn--primary">Voltar à página inicial</a>
-			<a href="mailto:hello@nostos.studio" class="err-btn">Contactar Nostos</a>
-		</div>
-
-		<p class="err-path">
-			{#if page.url.pathname !== '/'}
-				Caminho tentado: <span class="err-mono">{page.url.pathname}</span>
+			{#if status === 404}
+				<p class="err-note">
+					Verifica o endereço ou volta ao início. O arquivo público continua disponível a partir da página
+					inicial.
+				</p>
 			{/if}
-		</p>
-	</section>
-</main>
+
+			<div class="err-actions">
+				<a href="/" class="err-btn err-btn--primary">Voltar à página inicial</a>
+				<a href="mailto:hello@nostos.studio" class="err-btn">Contactar Nostos</a>
+			</div>
+
+			<p class="err-path">
+				{#if page.url.pathname !== '/'}
+					Caminho tentado: <span class="err-mono">{page.url.pathname}</span>
+				{/if}
+			</p>
+		</section>
+	</main>
+</SiteChrome>
 
 <style>
 	.err-page {
