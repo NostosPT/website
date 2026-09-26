@@ -2,3 +2,11 @@
 node_modules/
 .vscode/
 .svelte-kit/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+npm-debug.log
+coverage/
