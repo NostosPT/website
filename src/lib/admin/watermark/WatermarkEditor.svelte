@@ -118,9 +118,9 @@
 						{/snippet}
 					</Field>
 				{:else}
-					<Field label="Logo" hint="Transparent PNG or SVG, light on dark works best.">
+					<Field label="Logo" hint="Transparent PNG, light on dark works best.">
 						{#snippet control({ id }: { id: string })}
-							<FileUpload {id} bind:files={logo} accept="image/png,image/svg+xml" icon="image" />
+							<FileUpload {id} bind:files={logo} accept="image/png" icon="image" />
 						{/snippet}
 					</Field>
 				{/if}

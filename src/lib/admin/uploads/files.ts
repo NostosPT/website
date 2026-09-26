@@ -1,13 +1,13 @@
 /** A file picked or dropped, with its path inside any dropped folder. */
 export type UploadCandidate = { file: File; path: string };
 
-const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/tiff', 'image/heic', 'image/heif'];
+const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const RAW_EXTENSIONS = ['.cr2', '.cr3', '.nef', '.arw', '.dng', '.raf', '.orf', '.rw2'];
 
 /** For the file input `accept` attribute. */
 export const ACCEPT = [...IMAGE_TYPES, ...RAW_EXTENSIONS].join(',');
 
-export const ACCEPT_LABEL = 'JPEG, PNG, WebP, TIFF, HEIC and camera RAW';
+export const ACCEPT_LABEL = 'JPEG, PNG, WebP and camera RAW';
 
 const IGNORED = new Set(['.DS_Store', 'Thumbs.db', 'desktop.ini']);
 

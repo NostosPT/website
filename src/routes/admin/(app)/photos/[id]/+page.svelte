@@ -29,6 +29,7 @@
 			icon="external-link"
 			href={`/archive/${photo.number}`}
 			target="_blank"
+			rel="noopener noreferrer"
 			disabled={photo.visibility === 'PRIVATE'}
 		>
 			View in archive

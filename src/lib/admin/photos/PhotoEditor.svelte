@@ -122,7 +122,7 @@
 				disabled={!form.watermarked || !preset}
 			/>
 			{#if photo.urls.original}
-				<Button href={photo.urls.original} target="_blank" variant="ghost" size="sm" icon="download">Original</Button>
+				<Button href={photo.urls.original} target="_blank" rel="noopener noreferrer" variant="ghost" size="sm" icon="download">Original</Button>
 			{/if}
 		</div>
 

@@ -1,6 +1,8 @@
 <script lang="ts">
 	type Props = {
 		href?: string;
+		target?: '_blank' | '_self' | '_parent' | '_top';
+		rel?: string;
 		variant?: 'primary' | 'ghost' | 'quiet';
 		size?: 'sm' | 'md';
 		children: import('svelte').Snippet;
@@ -8,7 +10,7 @@
 		ariaLabel?: string;
 	};
 
-	let { href, variant = 'primary', size = 'md', children, onclick, ariaLabel }: Props = $props();
+	let { href, target, rel, variant = 'primary', size = 'md', children, onclick, ariaLabel }: Props = $props();
 
 	const cls = $derived(
 		['btn', `btn--${variant}`, `btn--${size}`].join(' ')
@@ -16,7 +18,7 @@
 </script>
 
 {#if href}
-	<a {href} class={cls} aria-label={ariaLabel}>
+	<a {href} {target} rel={target === '_blank' ? (rel ?? 'noopener noreferrer') : rel} class={cls} aria-label={ariaLabel}>
 		<span class="btn-label">{@render children()}</span>
 	</a>
 {:else}

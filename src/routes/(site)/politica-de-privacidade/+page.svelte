@@ -427,7 +427,7 @@
 			<p>
 				Em Portugal, a autoridade de controlo é a:<br />
 				<strong>Comissão Nacional de Proteção de Dados (CNPD)</strong><br />
-				<a href="https://www.cnpd.pt/" target="_blank" rel="noreferrer">Website da CNPD</a>
+				<a href="https://www.cnpd.pt/" target="_blank" rel="noopener noreferrer">Website da CNPD</a>
 			</p>
 		</section>
 
