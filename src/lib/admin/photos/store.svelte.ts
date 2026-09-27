@@ -1,6 +1,6 @@
 import { api, type PaginatedList, API_URL } from '$lib/admin/api/client';
 import type { Availability, Photo, PhotoPatch, PhotoStatus, Visibility } from './types';
-import { photos } from '$lib/admin/photos/store.svelte';
+import { seedPhotos } from './mock';
 
 // Starting categories (CONTENT.md); any category a photo uses is added to the list.
 const baseCategories = ['Street', 'Urban', 'Automotive', 'Portrait', 'Landscape', 'Events'];
@@ -26,7 +26,7 @@ export type PhotoFilter = {
 
 /** Street photos with people need a consent check before sale (CONTENT.md › Street Photography). */
 export function needsConsentCheck(photo: Pick<Photo, 'tags' | 'availability'>): boolean {
-	return photo.tags.includes('people') && photo.availability === 'AVAILABLE';
+	return (photo.tags?.includes('people') ?? false) && photo.availability === 'AVAILABLE';
 }
 
 interface PhotoListResponse {
@@ -81,7 +81,7 @@ class PhotoStore {
 					String(p.number) === q ||
 					(p.title ?? '').toLowerCase().includes(q) ||
 					(p.location ?? '').toLowerCase().includes(q) ||
-					p.tags.some((t) => t.includes(q))
+					p.tags?.some((t) => t.includes(q))
 			)
 			.sort((a, b) => b.number - a.number);
 	}
@@ -118,7 +118,7 @@ class PhotoStore {
 	}
 
 	/** Registers an uploaded original (POST /v1/photos { originalKey, ... }). */
-	async add(input: Pick<Photo, 'originalKey' | 'width' | 'height' | 'urls'> & PhotoPatch): Promise<Photo> {
+	async add(input: Pick<Photo, 'originalKey' | 'width' | 'height'> & PhotoPatch): Promise<Photo> {
 		if (!API_URL) {
 			// Mock mode
 			const now = new Date().toISOString();
@@ -131,13 +131,13 @@ class PhotoStore {
 				thumbnailKey: null,
 				takenAt: null,
 				location: null,
-				category: null,
-				tags: [],
+				status: 'DRAFT',
 				visibility: 'PRIVATE',
 				availability: 'NOT_FOR_SALE',
 				priceCents: null,
 				currency: 'EUR',
 				photographerId: null,
+				uploadStatus: 'PENDING',
 				createdAt: new Date().toISOString(),
 				updatedAt: new Date().toISOString(),
 				...input
@@ -155,7 +155,7 @@ class PhotoStore {
 	}
 
 	remove(ids: string[]) {
-		this.items = this.items.filter((p) => !ids.includes(p));
+		this.items = this.items.filter((p) => !ids.includes(p.id));
 	}
 
 	async removeMany(ids: string[]): Promise<void> {

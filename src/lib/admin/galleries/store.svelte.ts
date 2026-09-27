@@ -250,11 +250,12 @@ class GalleryStore {
 		if (!API_URL) {
 			return this.setAccessCode(id, enabled);
 		}
-		const code = await api<{ code: string | null }>(`/v1/galleries/${id}/access-code`, {
+		const result = await api<{ code: string | null }>(`/v1/galleries/${id}/access-code`, {
 			method: 'POST',
 			body: JSON.stringify({ enabled })
 		});
 		this.update(id, { hasAccessCode: enabled });
+		const code = result.code;
 		if (code) this.revealedCodes[id] = code;
 		else delete this.revealedCodes[id];
 		return code;
@@ -268,53 +269,7 @@ class GalleryStore {
 		if (!API_URL) {
 			this.remove(id);
 			return;
-		}
-		await api(`/v1/galleries/${id}`, { method: 'DELETE' });
-		this.remove(id);
-	}
-
-	async load(): Promise<void> {
-		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode
-			this.items = [
-				{
-					id: 'gal_regaleira', slug: 'k7Qm2xVb9pLr', title: 'Quinta da Regaleira', message: 'Beatriz & Nuno — thank you for letting us be there. Choose up to 60 favourites for the album.',
-					status: 'PUBLISHED', hasAccessCode: true, allowDownload: false, expiresAt: daysFromNow(54), clientId: 'cli_beatriz', serviceId: 'svc_weddings',
-					photos: [{ photoId: 'ph_401', selected: true }, { photoId: 'ph_403', selected: false }, { photoId: 'ph_404', selected: false }, { photoId: 'ph_405', selected: true }, { photoId: 'ph_406', selected: false }, { photoId: 'ph_408', selected: true }, { photoId: 'ph_409', selected: false }, { photoId: 'ph_410', selected: false }, { photoId: 'ph_411', selected: false }, { photoId: 'ph_413', selected: true }, { photoId: 'ph_414', selected: true }, { photoId: 'ph_415', selected: true }, { photoId: 'ph_416', selected: true }],
-					selectionLimit: 60, selectionSubmittedAt: minutesAgo(12), views: 38, lastViewedAt: minutesAgo(12), createdAt: daysAgo(7), updatedAt: minutesAgo(12)
-				},
-				{
-					id: 'gal_sal_spring', slug: 'Hs3vT8nWq1Ze', title: 'Spring menu', message: 'All photographs are cleared for web and print.',
-					status: 'PUBLISHED', hasAccessCode: false, allowDownload: true, expiresAt: daysFromNow(20), clientId: 'cli_sal', serviceId: 'svc_commercial',
-					photos: [{ photoId: 'ph_407', selected: false }, { photoId: 'ph_409', selected: false }, { photoId: 'ph_401', selected: false }], selectionLimit: null, selectionSubmittedAt: null, views: 12, lastViewedAt: daysAgo(3, 12), createdAt: daysAgo(45), updatedAt: daysAgo(40)
-				},
-				{
-					id: 'gal_garagem47', slug: 'Pz4rY6cKm0Na', title: 'Classic collection', message: null,
-					status: 'ARCHIVED', hasAccessCode: true, allowDownload: true, expiresAt: daysAgo(10), clientId: 'cli_lucas', serviceId: 'svc_automotive',
-					photos: [{ photoId: 'ph_412', selected: false }, { photoId: 'ph_402', selected: false }], selectionLimit: null, selectionSubmittedAt: daysAgo(50), views: 21, lastViewedAt: daysAgo(48), createdAt: daysAgo(58), updatedAt: daysAgo(10)
-				},
-				{
-					id: 'gal_lumen', slug: 'Wb8nE2sXq5Tj', title: 'Hotel Lumen — scouting', message: null,
-					status: 'DRAFT', hasAccessCode: false, allowDownload: false, expiresAt: null, clientId: 'cli_lumen', serviceId: 'svc_commercial',
-					photos: [{ photoId: 'ph_407', selected: false }, { photoId: 'ph_409', selected: false }], selectionLimit: null, selectionSubmittedAt: null, views: 0, lastViewedAt: null, createdAt: daysAgo(2), updatedAt: daysAgo(2)
-				}
-			];
-			this.#loaded = true;
-			return;
-		}
-
-		this.#loading = true;
-		try {
-			const response = await api<{ items: Gallery[]; page: number; pageSize: number; total: number }>(
-				'/v1/galleries?page=1&pageSize=100'
-			);
-			this.items = response.items;
-			this.#loaded = true;
-		} finally {
-			this.#loading = false;
-		}
-	}
 }
-
+		};
+	}
 export const galleries = new GalleryStore();

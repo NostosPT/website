@@ -56,12 +56,12 @@
 			category: p.category ?? '',
 			location: p.location ?? '',
 			takenAt: p.takenAt ? new Date(p.takenAt) : undefined,
-			tags: [...p.tags],
+			tags: [...(p.tags ?? [])],
 			photographerId: p.photographerId ?? '',
 			visibility: p.visibility,
 			availability: p.availability,
 			price: p.priceCents != null ? p.priceCents / 100 : null,
-			watermarked: p.watermarked
+			watermarked: p.watermarked ?? false
 		};
 	}
 
@@ -75,21 +75,18 @@
 	let photographer = $derived(team.get(form.photographerId));
 	let inGalleries = $derived(galleries.containing(photo.id));
 
-	async function save() {
+async function save() {
 		saving = true;
 		await new Promise((resolve) => setTimeout(resolve, 300));
-		photos.update(photo.id, {
+		await photos.update(photo.id, {
 			title: form.title.trim() || null,
 			description: form.description.trim() || null,
-			category: form.category || null,
 			location: form.location.trim() || null,
 			takenAt: form.takenAt?.toISOString() ?? null,
-			tags: form.tags,
 			photographerId: form.photographerId || null,
 			visibility: form.visibility,
 			availability: form.availability,
 			priceCents: form.price != null ? Math.round(form.price * 100) : null,
-			watermarked: form.watermarked
 		});
 		saving = false;
 		toast.success(`${photoNumber(photo.number)} saved`);
@@ -107,7 +104,7 @@
 			class="frame"
 			style:aspect-ratio={photo.width && photo.height ? `${photo.width} / ${photo.height}` : '3 / 2'}
 		>
-			{#if photo.urls.display}
+			{#if photo.urls?.display}
 				<img src={photo.urls.display} alt={form.title || photoNumber(photo.number)} />
 			{/if}
 			{#if showWatermark && form.watermarked && preset}
@@ -121,7 +118,7 @@
 				label="Preview watermark"
 				disabled={!form.watermarked || !preset}
 			/>
-			{#if photo.urls.original}
+			{#if photo.urls?.original}
 				<Button href={photo.urls.original} target="_blank" rel="noopener noreferrer" variant="ghost" size="sm" icon="download">Original</Button>
 			{/if}
 		</div>

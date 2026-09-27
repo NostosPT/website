@@ -55,7 +55,7 @@
 <div class="editor">
 	<section class="preview">
 		<figure class="frame" style:aspect-ratio={sample?.width && sample?.height ? `${sample.width} / ${sample.height}` : '3 / 2'}>
-			{#if sample?.urls.display}<img src={sample.urls.display} alt="" />{/if}
+			{#if sample?.urls?.display}<img src={sample.urls.display} alt="" />{/if}
 			<WatermarkOverlay preset={draft} number={sample?.number} />
 		</figure>
 		<div class="sample">

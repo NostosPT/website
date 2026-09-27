@@ -131,7 +131,7 @@ class ClientStore {
 		this.items = this.items.filter((c) => c.id !== id);
 	}
 
-	async removeRemote(id: string): Promise<void> {
+async removeRemote(id: string): Promise<void> {
 		if (!API_URL) {
 			this.remove(id);
 			return;
@@ -139,34 +139,5 @@ class ClientStore {
 		await api(`/v1/clients/${id}`, { method: 'DELETE' });
 		this.remove(id);
 	}
-
-	async load(): Promise<void> {
-		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			const { seedClients, seedActivity } = await import('./mock');
-			this.items = seedClients;
-			this.activity = seedActivity;
-			this.#loaded = true;
-			return;
-		}
-
-		this.#loading = true;
-		try {
-			const [clientsRes, activityRes] = await Promise.all([
-				api<{ items: Client[]; page: number; pageSize: number; total: number }>(
-					'/v1/clients?page=1&pageSize=100'
-				),
-				api<{ items: ClientActivity[]; page: number; pageSize: number; total: number }>(
-					'/v1/clients/activity?page=1&pageSize=100'
-				)
-			];
-			this.items = clientsRes.items;
-			this.activity = activityRes.items;
-			this.#loaded = true;
-		} finally {
-			this.#loading = false;
-		}
-	}
 }
-
 export const clients = new ClientStore();

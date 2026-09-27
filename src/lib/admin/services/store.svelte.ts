@@ -62,13 +62,6 @@ class ServiceStore {
 		}
 	}
 
-	sorted = $derived([...this.items].sort((a, b) => a.position - b.position));
-	options = $derived(this.sorted.map((s) => ({ value: s.id, label: s.name })));
-
-	get(id: string | null | undefined): Service | undefined {
-		return id ? this.items.find((s) => s.id === id) : undefined;
-	}
-
 	create(input: Omit<Service, 'id' | 'slug' | 'position'>): Service {
 		const service: Service = {
 			...input,
@@ -138,7 +131,7 @@ class ServiceStore {
 		this.items = this.items.filter((s) => s.id !== id);
 	}
 
-	async removeRemote(id: string): Promise<void> {
+async removeRemote(id: string): Promise<void> {
 		if (!API_URL) {
 			this.remove(id);
 			return;
@@ -146,34 +139,5 @@ class ServiceStore {
 		await api(`/v1/services/${id}`, { method: 'DELETE' });
 		this.remove(id);
 	}
-
-	async load(): Promise<void> {
-		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode
-			this.items = [
-				{ id: 'svc_automotive', slug: 'automotive', name: 'Automotive', description: 'Vehicles in motion and at rest, for owners, garages and brands.', priceFromCents: 18000, priceToCents: 60000, currency: 'EUR', active: true, position: 0, icon: 'car' },
-				{ id: 'svc_portrait', slug: 'portrait', name: 'Portrait', description: 'Individual and small-group portraits, on location in and around Lisbon.', priceFromCents: 12000, priceToCents: 30000, currency: 'EUR', active: true, position: 1, icon: 'user' },
-				{ id: 'svc_events', slug: 'event-coverage', name: 'Event coverage', description: 'Corporate dinners, launches and private events, documented quietly.', priceFromCents: 25000, priceToCents: 90000, currency: 'EUR', active: true, position: 2, icon: 'calendar' },
-				{ id: 'svc_weddings', slug: 'weddings', name: 'Weddings', description: 'Full-day coverage with a private gallery for selection and delivery.', priceFromCents: 120000, priceToCents: 350000, currency: 'EUR', active: true, position: 3, icon: 'heart' },
-				{ id: 'svc_commercial', slug: 'commercial', name: 'Commercial', description: 'Spaces, products and teams for hospitality, retail and architecture.', priceFromCents: 40000, priceToCents: 150000, currency: 'EUR', active: true, position: 4, icon: 'diamond' },
-				{ id: 'svc_custom', slug: 'custom', name: 'Other / custom', description: 'Anything else. Priced after a short conversation.', priceFromCents: null, priceToCents: null, currency: 'EUR', active: false, position: 5, icon: 'sparkles' }
-			];
-			this.#loaded = true;
-			return;
-		}
-
-		this.#loading = true;
-		try {
-			const response = await api<{ items: Service[]; page: number; pageSize: number; total: number }>(
-				'/v1/services?page=1&pageSize=100'
-			);
-			this.items = response.items;
-			this.#loaded = true;
-		} finally {
-			this.#loading = false;
-		}
-	}
 }
-
 export const services = new ServiceStore();

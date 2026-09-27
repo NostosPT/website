@@ -40,7 +40,7 @@ export const mockTransport: UploadTransport = {
 	async register(key, file, meta) {
 		// Mock only: the object URL lives until the page reloads.
 		const url = URL.createObjectURL(file);
-		return photos.add({ ...meta, originalKey: key, urls: { display: url, thumbnail: url, original: url } });
+		return photos.add({ ...meta, originalKey: key });
 	}
 };
 

@@ -151,9 +151,7 @@ class UploadQueue {
 				...(await dimensionsOf(item.file)),
 				title: item.file.name.replace(/\.[^.]+$/, ''),
 				visibility: settings.visibility,
-				category: settings.category || null,
-				photographerId: settings.photographerId || null,
-				watermarked: settings.watermarked
+				photographerId: settings.photographerId || null
 			});
 			item.photoId = photo.id;
 			this.#place(item, photo.id);
@@ -186,7 +184,7 @@ class UploadQueue {
 		let id = this.#folderAlbums.get(folder);
 		if (!id) {
 			const title = folder.split('/').pop() || folder;
-			id = albums.create({ title, description: null, visibility: settings.visibility }).id;
+			id = albums.create({ title, description: null, status: 'DRAFT', type: 'FREE' }).id;
 			this.#folderAlbums.set(folder, id);
 		}
 		return id;
