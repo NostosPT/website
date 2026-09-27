@@ -1,21 +1,21 @@
-import type { StatusMap } from '$lib/admin/shared/status';
-import { seedPhotos } from './mock';
-import type { Availability, Photo, PhotoPatch, Visibility } from './types';
+import { api, type PaginatedList, API_URL } from '$lib/admin/api/client';
+import type { Availability, Photo, PhotoPatch, PhotoStatus, Visibility } from './types';
+import { photos } from '$lib/admin/photos/store.svelte';
 
 // Starting categories (CONTENT.md); any category a photo uses is added to the list.
 const baseCategories = ['Street', 'Urban', 'Automotive', 'Portrait', 'Landscape', 'Events'];
 
-export const availabilityStatus: StatusMap<Availability> = {
+export const availabilityStatus = {
 	AVAILABLE: { label: 'For sale', tone: 'success' },
 	NOT_FOR_SALE: { label: 'Not for sale', tone: 'neutral' },
 	SOLD_OUT: { label: 'Sold out', tone: 'warning' }
-};
+} as const;
 
 export const availabilityOptions = [
 	{ value: 'AVAILABLE', label: 'For sale' },
 	{ value: 'NOT_FOR_SALE', label: 'Not for sale' },
 	{ value: 'SOLD_OUT', label: 'Sold out' }
-];
+] as const;
 
 export type PhotoFilter = {
 	query: string;
@@ -29,12 +29,29 @@ export function needsConsentCheck(photo: Pick<Photo, 'tags' | 'availability'>): 
 	return photo.tags.includes('people') && photo.availability === 'AVAILABLE';
 }
 
+interface PhotoListResponse {
+	items: Photo[];
+	page: number;
+	pageSize: number;
+	total: number;
+}
+
 /**
- * Archive photographs. API: GET/POST /photos (cursor-paginated `{ items, nextCursor }`),
- * GET/PATCH/DELETE /photos/:id, POST /photos/uploads for presigned upload URLs.
+ * Archive photographs. API: GET/POST /v1/photos (page/pagination),
+ * GET/PATCH/DELETE /v1/photos/:id, POST /v1/photos/uploads for presigned upload URLs.
  */
 class PhotoStore {
-	items = $state<Photo[]>(seedPhotos);
+	items = $state<Photo[]>([]);
+	#loaded = false;
+	#loading = false;
+
+	get loaded() {
+		return this.#loaded;
+	}
+
+	get loading() {
+		return this.#loading;
+	}
 
 	categories = $derived(
 		[...new Set([...baseCategories, ...this.items.map((p) => p.category).filter(Boolean)])].sort() as string[]
@@ -69,6 +86,28 @@ class PhotoStore {
 			.sort((a, b) => b.number - a.number);
 	}
 
+	async load(): Promise<void> {
+		if (this.#loaded || this.#loading) return;
+		if (!API_URL) {
+			// Mock mode: use mock data
+			const { seedPhotos } = await import('./mock');
+			this.items = seedPhotos;
+			this.#loaded = true;
+			return;
+		}
+
+		this.#loading = true;
+		try {
+			const response = await api<{ items: Photo[]; page: number; pageSize: number; total: number }>(
+				'/v1/photos?page=1&pageSize=500'
+			);
+			this.items = response.items;
+			this.#loaded = true;
+		} finally {
+			this.#loading = false;
+		}
+	}
+
 	update(id: string, patch: PhotoPatch) {
 		const photo = this.get(id);
 		if (photo) Object.assign(photo, patch, { updatedAt: new Date().toISOString() });
@@ -78,36 +117,67 @@ class PhotoStore {
 		for (const id of ids) this.update(id, patch);
 	}
 
-	/** Registers an uploaded original (POST /photos { originalKey, ... }). */
-	add(input: Pick<Photo, 'originalKey' | 'width' | 'height' | 'urls'> & PhotoPatch): Photo {
-		const now = new Date().toISOString();
-		const photo: Photo = {
-			id: `ph_${this.nextNumber}`,
-			number: this.nextNumber,
-			title: null,
-			description: null,
-			displayKey: null,
-			thumbnailKey: null,
-			takenAt: null,
-			location: null,
-			category: null,
-			tags: [],
-			visibility: 'PRIVATE',
-			availability: 'NOT_FOR_SALE',
-			priceCents: null,
-			currency: 'EUR',
-			watermarked: false,
-			photographerId: null,
-			createdAt: now,
-			updatedAt: now,
-			...input
-		};
-		this.items.push(photo);
+	/** Registers an uploaded original (POST /v1/photos { originalKey, ... }). */
+	async add(input: Pick<Photo, 'originalKey' | 'width' | 'height' | 'urls'> & PhotoPatch): Promise<Photo> {
+		if (!API_URL) {
+			// Mock mode
+			const now = new Date().toISOString();
+			const photo: Photo = {
+				id: `ph_${this.nextNumber}`,
+				number: this.nextNumber,
+				title: null,
+				description: null,
+				displayKey: null,
+				thumbnailKey: null,
+				takenAt: null,
+				location: null,
+				category: null,
+				tags: [],
+				visibility: 'PRIVATE',
+				availability: 'NOT_FOR_SALE',
+				priceCents: null,
+				currency: 'EUR',
+				photographerId: null,
+				createdAt: new Date().toISOString(),
+				updatedAt: new Date().toISOString(),
+				...input
+			};
+			this.items.push(photo);
+			return photo;
+		}
+
+		const photo = await api<Photo>('/v1/photos', {
+			method: 'POST',
+			body: JSON.stringify({ ...input, originalKey: input.originalKey })
+		});
+		this.items.unshift(photo);
 		return photo;
 	}
 
 	remove(ids: string[]) {
+		this.items = this.items.filter((p) => !ids.includes(p));
+	}
+
+	async removeMany(ids: string[]): Promise<void> {
+		if (!API_URL) {
+			this.items = this.items.filter((p) => !ids.includes(p.id));
+			return;
+		}
+		await Promise.all(ids.map((id) => api(`/v1/photos/${id}`, { method: 'DELETE' })));
 		this.items = this.items.filter((p) => !ids.includes(p.id));
+	}
+
+	async updateRemote(id: string, patch: PhotoPatch): Promise<void> {
+		if (!API_URL) {
+			this.update(id, patch);
+			return;
+		}
+		const photo = await api<Photo>(`/v1/photos/${id}`, {
+			method: 'PATCH',
+			body: JSON.stringify(patch)
+		});
+		const idx = this.items.findIndex((p) => p.id === id);
+		if (idx >= 0) this.items[idx] = photo;
 	}
 }
 
