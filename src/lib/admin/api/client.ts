@@ -26,17 +26,27 @@ export class ApiError extends Error {
 }
 
 /** JSON request against the Website API (staff session cookie included). */
-export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
+export async function api<T>(
+	path: string,
+	init: RequestInit & { fetch?: typeof globalThis.fetch } = {}
+): Promise<T> {
+	const fetchFn = init.fetch ?? globalThis.fetch;
+	const { fetch: _unused, ...initRest } = init;
 	let response: Response;
 	try {
-		response = await fetch(`${API_URL}${path}`, {
-			...init,
-			credentials: 'include',
-			headers: { 'content-type': 'application/json', ...init.headers }
+		// When using a custom fetch (e.g., SvelteKit's fetch during SSR/CSR),
+		// don't override credentials - the custom fetch handles credentials automatically.
+		// Only set credentials when using the global fetch directly.
+		const credentials = init.fetch ? undefined : 'include';
+		response = await fetchFn(`${API_URL}${path}`, {
+			...initRest,
+			credentials,
+			headers: { 'content-type': 'application/json', ...initRest.headers }
 		});
 	} catch {
 		throw new ApiError(0, 'Website API is unreachable', 'SERVICE_UNAVAILABLE');
 	}
+
 	const body = await response.json().catch(() => null);
 	if (!response.ok) {
 		const error = body?.error ?? {};
@@ -47,6 +57,7 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
 			error.details
 		);
 	}
+
 	return response.status === 204 ? (undefined as T) : (body as T);
 }
 

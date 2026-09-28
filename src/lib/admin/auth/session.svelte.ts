@@ -17,7 +17,7 @@ class Session {
 		return this.#loading;
 	}
 
-	async signIn(email: string, password: string): Promise<{ ok: true } | { ok: false; error: string }> {
+	async signIn(email: string, password: string, fetch?: typeof globalThis.fetch): Promise<{ ok: true } | { ok: false; error: string }> {
 		if (!API_URL) {
 			return this.signInMock(email, password);
 		}
@@ -26,9 +26,10 @@ class Session {
 		try {
 			await api('/v1/auth/login', {
 				method: 'POST',
-				body: JSON.stringify({ email, password })
+				body: JSON.stringify({ email, password }),
+				fetch
 			});
-			await this.restore();
+			await this.restore(fetch);
 			return { ok: true };
 		} catch (e) {
 			// Offline backend only: fall back to the mock directory (never on 401/403).
@@ -64,11 +65,13 @@ class Session {
 		return { ok: true };
 	}
 
-	async restore(): Promise<void> {
+	async restore(fetch?: typeof globalThis.fetch): Promise<void> {
 		if (!API_URL) return;
 		try {
-			const user = await api<{ user: StaffUser }>('/v1/auth/me');
-			this.user = user.user;
+			const user = await api<StaffUser>('/v1/auth/me', {
+				fetch: fetch ?? globalThis.fetch
+			});
+			this.user = user;
 		} catch {
 			this.user = null;
 		}

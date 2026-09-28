@@ -21,7 +21,7 @@
 		event.preventDefault();
 		pending = true;
 		error = null;
-		const result = await session.signIn(email, password);
+		const result = await session.signIn(email, password, fetch);
 		pending = false;
 		if (result.ok) goto(next);
 		else error = result.error;
