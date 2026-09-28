@@ -88,20 +88,20 @@ class PhotoStore {
 
 	async load(): Promise<void> {
 		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode: use mock data
-			const { seedPhotos } = await import('./mock');
-			this.items = seedPhotos;
-			this.#loaded = true;
-			return;
-		}
 
 		this.#loading = true;
 		try {
+			// Real backend first (Website API → Real API).
 			const response = await api<{ items: Photo[]; page: number; pageSize: number; total: number }>(
 				'/v1/photos?page=1&pageSize=500'
 			);
 			this.items = response.items;
+			this.#loaded = true;
+			return;
+		} catch {
+			// Offline backend: fall back to mock data.
+			const { seedPhotos } = await import('./mock');
+			this.items = seedPhotos;
 			this.#loaded = true;
 		} finally {
 			this.#loading = false;

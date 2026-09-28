@@ -65,8 +65,24 @@ class GalleryStore {
 
 	async load(): Promise<void> {
 		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode
+
+		this.#loading = true;
+		try {
+			// Real backend first (Website API → Real API).
+			const response = await api<{ items: Gallery[]; page: number; pageSize: number; total: number }>(
+				'/v1/galleries?page=1&pageSize=100'
+			);
+			this.items = response.items;
+			this.#loaded = true;
+			return;
+		} catch {
+			// Offline backend: fall through to the mock catalogue below.
+		} finally {
+			this.#loading = false;
+		}
+
+		{
+			// Mock fallback (offline backend).
 			this.items = [
 				{
 					id: 'gal_regaleira', slug: 'k7Qm2xVb9pLr', title: 'Quinta da Regaleira', message: 'Beatriz & Nuno — thank you for letting us be there. Choose up to 60 favourites for the album.',
@@ -91,18 +107,6 @@ class GalleryStore {
 				}
 			];
 			this.#loaded = true;
-			return;
-		}
-
-		this.#loading = true;
-		try {
-			const response = await api<{ items: Gallery[]; page: number; pageSize: number; total: number }>(
-				'/v1/galleries?page=1&pageSize=100'
-			);
-			this.items = response.items;
-			this.#loaded = true;
-		} finally {
-			this.#loading = false;
 		}
 	}
 

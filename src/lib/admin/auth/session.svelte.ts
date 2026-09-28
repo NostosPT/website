@@ -1,4 +1,4 @@
-import { api, API_URL } from '$lib/admin/api/client';
+import { api, ApiError, API_URL } from '$lib/admin/api/client';
 import { team } from '$lib/admin/team/store.svelte';
 import type { StaffUser } from '$lib/admin/team/types';
 
@@ -19,13 +19,7 @@ class Session {
 
 	async signIn(email: string, password: string): Promise<{ ok: true } | { ok: false; error: string }> {
 		if (!API_URL) {
-			// Mock mode
-			await new Promise((resolve) => setTimeout(resolve, 450));
-			const member = team.members.find((m) => m.email.toLowerCase() === email.trim().toLowerCase());
-			if (!member || !password) return { ok: false, error: 'Email or password is incorrect.' };
-			if (member.status === 'SUSPENDED') return { ok: false, error: 'This account is suspended.' };
-			this.user = member;
-			return { ok: true };
+			return this.signInMock(email, password);
 		}
 
 		this.#loading = true;
@@ -37,6 +31,14 @@ class Session {
 			await this.restore();
 			return { ok: true };
 		} catch (e) {
+			// Offline backend only: fall back to the mock directory (never on 401/403).
+			if (e instanceof ApiError && e.status === 0) {
+				try {
+					return await this.signInMock(email, password);
+				} finally {
+					this.#loading = false;
+				}
+			}
 			if (e instanceof Error && 'status' in e && (e as any).status === 401) {
 				return { ok: false, error: 'Email or password is incorrect.' };
 			}
@@ -47,6 +49,19 @@ class Session {
 		} finally {
 			this.#loading = false;
 		}
+	}
+
+	/** Offline mock directory (also used when the Website API is unreachable). */
+	private async signInMock(
+		email: string,
+		password: string
+	): Promise<{ ok: true } | { ok: false; error: string }> {
+		await new Promise((resolve) => setTimeout(resolve, 450));
+		const member = team.members.find((m) => m.email.toLowerCase() === email.trim().toLowerCase());
+		if (!member || !password) return { ok: false, error: 'Email or password is incorrect.' };
+		if (member.status === 'SUSPENDED') return { ok: false, error: 'This account is suspended.' };
+		this.user = member;
+		return { ok: true };
 	}
 
 	async restore(): Promise<void> {

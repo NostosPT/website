@@ -42,8 +42,24 @@ class AlbumStore {
 
 	async load(): Promise<void> {
 		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode
+
+		this.#loading = true;
+		try {
+			// Real backend first (Website API → Real API).
+			const response = await api<{ items: Album[]; page: number; pageSize: number; total: number }>(
+				'/v1/albums?page=1&pageSize=100'
+			);
+			this.items = response.items;
+			this.#loaded = true;
+			return;
+		} catch {
+			// Offline backend: fall through to the mock catalogue below.
+		} finally {
+			this.#loading = false;
+		}
+
+		{
+			// Mock fallback (offline backend).
 			this.items = [
 				{ id: 'alb_city', clientId: 'cli_demo', slug: 'the-city-slowly', title: 'The city, slowly', description: 'Streets, arcades and the lines trams leave behind.', type: 'FREE', status: 'PUBLISHED', accessCodeHash: null, secretVersion: 1, priceCents: null, packPriceCents: null, packSize: null, currency: 'EUR', coverPhotoId: 'ph_414', expiresAt: null, publishedAt: daysAgo(40), views: 0, lastViewedAt: null, photoIds: ['ph_414', 'ph_403', 'ph_408', 'ph_410', 'ph_401', 'ph_409'], createdAt: daysAgo(90), updatedAt: daysAgo(12) },
 				{ id: 'alb_night', clientId: 'cli_demo', slug: 'after-hours', title: 'After hours', description: 'The last trams and the people on them.', type: 'FREE', status: 'PUBLISHED', accessCodeHash: null, secretVersion: 1, priceCents: null, packPriceCents: null, packSize: null, currency: 'EUR', coverPhotoId: 'ph_416', expiresAt: null, publishedAt: daysAgo(18), views: 0, lastViewedAt: null, photoIds: ['ph_416', 'ph_404', 'ph_406', 'ph_411'], createdAt: daysAgo(30), updatedAt: daysAgo(18) },
@@ -51,18 +67,6 @@ class AlbumStore {
 				{ id: 'alb_quiet', clientId: 'cli_demo', slug: 'quiet-things', title: 'Quiet things', description: null, type: 'FREE', status: 'DRAFT', accessCodeHash: null, secretVersion: 1, priceCents: null, packPriceCents: null, packSize: null, currency: 'EUR', coverPhotoId: null, expiresAt: null, publishedAt: null, views: 0, lastViewedAt: null, photoIds: ['ph_415', 'ph_413', 'ph_407'], createdAt: daysAgo(8), updatedAt: daysAgo(2) }
 			];
 			this.#loaded = true;
-			return;
-		}
-
-		this.#loading = true;
-		try {
-			const response = await api<{ items: Album[]; page: number; pageSize: number; total: number }>(
-				'/v1/albums?page=1&pageSize=100'
-			);
-			this.items = response.items;
-			this.#loaded = true;
-		} finally {
-			this.#loading = false;
 		}
 	}
 

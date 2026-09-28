@@ -30,20 +30,20 @@ class ClientStore {
 
 	async load(): Promise<void> {
 		if (this.#loaded || this.#loading) return;
-		if (!API_URL) {
-			// Mock mode
-			const { seedClients } = await import('./mock');
-			this.items = seedClients;
-			this.#loaded = true;
-			return;
-		}
 
 		this.#loading = true;
 		try {
+			// Real backend first (Website API → Real API).
 			const response = await api<{ items: Client[]; page: number; pageSize: number; total: number }>(
 				'/v1/clients?page=1&pageSize=100'
 			);
 			this.items = response.items;
+			this.#loaded = true;
+			return;
+		} catch {
+			// Offline backend: fall back to mock data.
+			const { seedClients } = await import('./mock');
+			this.items = seedClients;
 			this.#loaded = true;
 		} finally {
 			this.#loading = false;
