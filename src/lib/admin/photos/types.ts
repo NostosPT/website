@@ -1,9 +1,13 @@
+export type PhotoStatus = 'DRAFT' | 'APPROVED' | 'PUBLISHED';
 export type Visibility = 'PUBLIC' | 'UNLISTED' | 'PRIVATE';
 export type Availability = 'NOT_FOR_SALE' | 'AVAILABLE' | 'SOLD_OUT';
+export type UploadStatus = 'PENDING' | 'READY' | 'FAILED';
 
 /**
- * An archive photograph, as the API returns it (`photoWithUrlsResponse`):
- * the stored S3 keys plus short-lived presigned URLs for each rendition.
+ * An archive photograph, as the API returns it.
+ * The API includes S3 keys and may include presigned URLs for renditions.
+ * `watermarked` is derived from album type, not stored per-photo.
+ * `category` and `tags` come from M:N relations.
  */
 export interface Photo {
 	id: string;
@@ -18,17 +22,23 @@ export interface Photo {
 	height: number | null;
 	takenAt: string | null;
 	location: string | null;
-	category: string | null;
-	tags: string[];
+	status: PhotoStatus;
 	visibility: Visibility;
 	availability: Availability;
 	priceCents: number | null;
 	currency: string;
-	watermarked: boolean;
 	photographerId: string | null;
+	uploadStatus: UploadStatus;
 	createdAt: string;
 	updatedAt: string;
-	urls: { display: string | null; thumbnail: string | null; original: string | null };
+	/** Optional presigned URLs for renditions (may be null in Phase 1). */
+	urls?: { display: string | null; thumbnail: string | null; original: string | null };
+	/** Category slugs from M:N relation. */
+	category?: string | null;
+	/** Tag slugs from M:N relation. */
+	tags?: string[];
+	/** Watermarking is derived from album type, not stored per-photo. */
+	watermarked?: boolean;
 }
 
 export type PhotoPatch = Partial<
@@ -38,13 +48,10 @@ export type PhotoPatch = Partial<
 		| 'description'
 		| 'takenAt'
 		| 'location'
-		| 'category'
-		| 'tags'
 		| 'visibility'
 		| 'availability'
 		| 'priceCents'
 		| 'currency'
-		| 'watermarked'
 		| 'photographerId'
 	>
 >;

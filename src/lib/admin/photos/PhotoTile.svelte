@@ -27,7 +27,7 @@
 
 <article class="tile" data-selected={selected || undefined} data-dimmed={dimmed || undefined}>
 	<svelte:element this={href ? 'a' : 'div'} {href} class="mat">
-		{#if photo.urls.thumbnail}
+		{#if photo.urls?.thumbnail}
 			<img src={photo.urls.thumbnail} alt={photo.title ?? photoNumber(photo.number)} loading="lazy" decoding="async" />
 		{:else}
 			<Icon name="image" size={24} />

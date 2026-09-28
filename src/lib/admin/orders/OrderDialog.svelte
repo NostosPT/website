@@ -39,7 +39,7 @@
 						description={photo ? `${photoNumber(photo.number)} “${photo.title}”` : item.photoId}
 						href={photo ? `/admin/photos/${photo.id}` : undefined}
 					>
-						{#snippet media()}<Thumbnail src={photo?.urls.thumbnail} alt="" size={44} />{/snippet}
+						{#snippet media()}<Thumbnail src={photo?.urls?.thumbnail ?? null} alt="" size={44} />{/snippet}
 						{#snippet meta()}<span class="price">{formatMoney(item.quantity * item.unitPriceCents)}</span>{/snippet}
 					</ListItem>
 				{/each}

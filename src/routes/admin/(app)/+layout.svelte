@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { session } from '$lib/admin/auth/session.svelte';
+	import { albums } from '$lib/admin/albums/store.svelte';
+	import { clients } from '$lib/admin/clients/store.svelte';
+	import { galleries } from '$lib/admin/galleries/store.svelte';
 	import ComposeDialog from '$lib/admin/mail/ComposeDialog.svelte';
+	import { photos } from '$lib/admin/photos/store.svelte';
+	import { pipeline } from '$lib/admin/pipeline/store.svelte';
+	import { services } from '$lib/admin/services/store.svelte';
 	import AppSidebar from '$lib/admin/shell/AppSidebar.svelte';
 	import CommandPalette from '$lib/admin/shell/CommandPalette.svelte';
 	import Topbar from '$lib/admin/shell/Topbar.svelte';
@@ -22,6 +29,18 @@
 	$effect(() => {
 		void page.url.pathname;
 		drawerOpen = false;
+	});
+
+	// Hydrate the staff session and core domain data once (Website API → Real
+	// API). Stores fall back to local mocks when the backend is unreachable.
+	$effect(() => {
+		void session.restore();
+		void services.load();
+		void pipeline.load();
+		void clients.load();
+		void galleries.load();
+		void albums.load();
+		void photos.load();
 	});
 </script>
 

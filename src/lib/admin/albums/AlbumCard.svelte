@@ -3,7 +3,7 @@
 	import { photos } from '$lib/admin/photos/store.svelte';
 	import Kicker from '$lib/admin/shared/Kicker.svelte';
 	import { formatDate, pluralize } from '$lib/admin/shared/format';
-	import { statusOf, visibilityStatus } from '$lib/admin/shared/status';
+	import { statusOf, albumStatusStatus } from '$lib/admin/shared/status';
 	import { albums } from './store.svelte';
 	import type { Album } from './types';
 
@@ -11,12 +11,12 @@
 	let { album }: { album: Album } = $props();
 
 	let cover = $derived(photos.get(albums.coverOf(album)));
-	let status = $derived(statusOf(visibilityStatus, album.visibility));
+	let status = $derived(statusOf(albumStatusStatus, album.status));
 </script>
 
 <a class="card" href={`/admin/albums/${album.id}`}>
 	<div class="media">
-		{#if cover?.urls.thumbnail}
+		{#if cover?.urls?.thumbnail}
 			<img src={cover.urls.thumbnail} alt="" loading="lazy" />
 		{:else}
 			<Icon name="bookmark" size={22} />

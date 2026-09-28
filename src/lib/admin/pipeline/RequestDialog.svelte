@@ -67,9 +67,9 @@
 		toast.success(`${request.reference} saved`);
 	}
 
-	function addNote() {
+	async function addNote() {
 		if (!note.trim() || !session.user) return;
-		pipeline.addNote(request.id, note.trim(), session.user.id);
+		await pipeline.addNoteRemote(request.id, note.trim(), session.user.id);
 		note = '';
 	}
 </script>

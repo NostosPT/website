@@ -58,14 +58,6 @@
 		selected = [];
 	}
 
-	function setWatermark(watermarked: boolean) {
-		photos.updateMany(selected, { watermarked });
-		toast.success(watermarked ? 'Watermark enabled' : 'Watermark removed', {
-			description: 'Renditions regenerate in the background.'
-		});
-		selected = [];
-	}
-
 	function addToAlbum(albumId: string) {
 		albums.addPhotos(albumId, selected);
 		toast.success(`Added to “${albums.get(albumId)?.title}”`);
@@ -189,7 +181,7 @@
 					</TableCell>
 					<TableCell>
 						<a class="row-link" href={`/admin/photos/${photo.id}`}>
-							<Thumbnail src={photo.urls.thumbnail} alt="" size={36} />
+							<Thumbnail src={photo.urls?.thumbnail ?? null} alt="" size={36} />
 							<span>
 								<strong>{photo.title ?? 'Untitled'}</strong>
 								<small>{photoNumber(photo.number)}</small>
@@ -238,13 +230,7 @@
 			<MenuSeparator />
 			<MenuItem icon="plus" href="/admin/albums?new">New album…</MenuItem>
 		</Menu>
-		<Menu placement="top-start" ariaLabel="Watermark">
-			{#snippet trigger({ toggle }: { toggle: () => void })}
-				<Button size="sm" variant="secondary" trailingIcon="chevron-up" onclick={toggle}>Watermark</Button>
-			{/snippet}
-			<MenuItem icon="typography" onselect={() => setWatermark(true)}>Apply archive watermark</MenuItem>
-			<MenuItem icon="x" onselect={() => setWatermark(false)}>Remove watermark</MenuItem>
-		</Menu>
+		
 		<Button size="sm" variant="soft" tone="danger" icon="trash" onclick={() => (confirmDelete = true)}>
 			Delete
 		</Button>

@@ -20,3 +20,15 @@ export const visibilityOptions = [
 	{ value: 'UNLISTED', label: 'Unlisted' },
 	{ value: 'PRIVATE', label: 'Private' }
 ];
+
+export const statusOptions = [
+	{ value: 'DRAFT', label: 'Draft' },
+	{ value: 'PUBLISHED', label: 'Published' },
+	{ value: 'ARCHIVED', label: 'Archived' }
+];
+
+export const albumStatusStatus: StatusMap<'DRAFT' | 'PUBLISHED' | 'ARCHIVED'> = {
+	DRAFT: { label: 'Draft', tone: 'neutral' as const },
+	PUBLISHED: { label: 'Published', tone: 'success' as const },
+	ARCHIVED: { label: 'Archived', tone: 'warning' as const }
+};

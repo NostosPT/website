@@ -17,7 +17,7 @@
 	import { albums } from '$lib/admin/albums/store.svelte';
 	import PhotoPicker from '$lib/admin/photos/PhotoPicker.svelte';
 	import { formatDate, pluralize, slugify } from '$lib/admin/shared/format';
-	import { visibilityOptions } from '$lib/admin/shared/status';
+	import { statusOptions } from '$lib/admin/shared/status';
 	import PageHeader from '$lib/admin/shell/PageHeader.svelte';
 
 	let { data } = $props();
@@ -46,7 +46,7 @@
 			href={`/archive/albums/${album.slug}`}
 			target="_blank"
 			rel="noopener noreferrer"
-			disabled={album.visibility === 'PRIVATE'}
+			disabled={album.status !== 'PUBLISHED'}
 		>
 			View on site
 		</Button>
@@ -109,14 +109,14 @@
 							/>
 						{/snippet}
 					</Field>
-					<Field label="Visibility" hint={album.publishedAt ? `Published ${formatDate(album.publishedAt)}` : 'Not published yet'}>
+					<Field label="Status" hint={album.publishedAt ? `Published ${formatDate(album.publishedAt)}` : 'Not published yet'}>
 						{#snippet control()}
 							<SegmentedControl
-								value={album.visibility}
-								items={visibilityOptions}
+								value={album.status}
+								items={statusOptions}
 								block
-								ariaLabel="Visibility"
-								onchange={(visibility: typeof album.visibility) => albums.update(album.id, { visibility })}
+								ariaLabel="Album status"
+								onchange={(status: typeof album.status) => albums.update(album.id, { status })}
 							/>
 						{/snippet}
 					</Field>

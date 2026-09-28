@@ -2,15 +2,15 @@
 	import { goto } from '$app/navigation';
 	import { Button, Field, Input, Modal, SegmentedControl, Textarea, toast } from '@nostospt/ui';
 	import { slugify } from '$lib/admin/shared/format';
-	import { visibilityOptions } from '$lib/admin/shared/status';
-	import type { Visibility } from '$lib/admin/photos/types';
 	import { albums } from './store.svelte';
+	import type { AlbumStatus, AlbumType } from './types';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
 	let title = $state('');
 	let description = $state('');
-	let visibility = $state<Visibility>('PRIVATE');
+	let status = $state<AlbumStatus>('DRAFT');
+	let type = $state<AlbumType>('FREE');
 	let submitted = $state(false);
 
 	let error = $derived(submitted && !title.trim() ? 'Give the album a title.' : undefined);
@@ -19,7 +19,8 @@
 		if (!open) return;
 		title = '';
 		description = '';
-		visibility = 'PRIVATE';
+		status = 'DRAFT';
+		type = 'FREE';
 		submitted = false;
 	});
 
@@ -27,7 +28,7 @@
 		event.preventDefault();
 		submitted = true;
 		if (error) return;
-		const album = albums.create({ title: title.trim(), description: description.trim() || null, visibility });
+		const album = albums.create({ title: title.trim(), description: description.trim() || null, status, type });
 		open = false;
 		toast.success(`“${album.title}” created`);
 		goto(`/admin/albums/${album.id}`);
@@ -46,9 +47,32 @@
 				<Textarea {id} bind:value={description} rows={3} />
 			{/snippet}
 		</Field>
-		<Field label="Visibility">
+		<Field label="Status">
 			{#snippet control()}
-				<SegmentedControl bind:value={visibility} items={visibilityOptions} block ariaLabel="Visibility" />
+				<SegmentedControl
+					bind:value={status}
+					ariaLabel="Album status"
+					items={[
+						{ value: 'DRAFT', label: 'Draft' },
+						{ value: 'PUBLISHED', label: 'Published' },
+						{ value: 'ARCHIVED', label: 'Archived' }
+					]}
+					block
+				/>
+			{/snippet}
+		</Field>
+		<Field label="Type" optional>
+			{#snippet control()}
+				<SegmentedControl
+					bind:value={type}
+					ariaLabel="Album type"
+					items={[
+						{ value: 'FREE', label: 'Free' },
+						{ value: 'WATERMARK', label: 'Watermark' },
+						{ value: 'PAID', label: 'Paid' }
+					]}
+					block
+				/>
 			{/snippet}
 		</Field>
 	</form>

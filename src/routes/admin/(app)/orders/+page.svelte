@@ -88,7 +88,7 @@
 						size="sm"
 						items={order.items.map((i) => {
 							const photo = photos.get(i.photoId);
-							return { src: photo?.urls.thumbnail, name: photo ? `Nº ${photo.number}` : '?' };
+							return { src: photo?.urls?.thumbnail ?? null, name: photo ? `Nº ${photo.number}` : '?' };
 						})}
 					/>
 				</TableCell>
