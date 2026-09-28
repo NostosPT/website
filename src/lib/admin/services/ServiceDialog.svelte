@@ -30,7 +30,7 @@
 			: { name: '', description: '', from: null, to: null, active: true, icon: 'sparkles' };
 	});
 
-	function save(event: SubmitEvent) {
+	async function save(event: SubmitEvent) {
 		event.preventDefault();
 		submitted = true;
 		if (errors.name || errors.range) return;
@@ -43,8 +43,14 @@
 			active: form.active,
 			icon: form.icon
 		};
-		if (service) services.update(service.id, fields);
-		else services.create(fields);
+		try {
+			if (service) await services.updateRemote(service.id, fields);
+			else await services.createRemote(fields);
+		} catch {
+			// Offline backend: apply locally.
+			if (service) services.update(service.id, fields);
+			else services.create(fields);
+		}
 		toast.success(service ? 'Service updated' : 'Service added');
 		open = false;
 	}

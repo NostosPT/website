@@ -44,11 +44,11 @@
 		if (!dialogOpen && openId) show(null);
 	});
 
-	function drop(stage: Stage) {
+	async function drop(stage: Stage) {
 		const request = pipeline.get(dragging);
 		if (request && request.stage !== stage) {
-			pipeline.move(request.id, stage);
-			toast(`${request.reference} → ${stageStatus[stage].label}`);
+			await pipeline.moveRemote(request.id, stage);
+			toast(`${request.reference} ��' ${stageStatus[stage].label}`);
 		}
 		dragging = over = null;
 	}

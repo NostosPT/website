@@ -25,6 +25,14 @@
 
 	const openRequests = (id: string) =>
 		pipeline.items.filter((r) => r.serviceId === id && !['COMPLETED', 'LOST'].includes(r.stage)).length;
+
+	async function moveService(id: string, direction: -1 | 1) {
+		try {
+			await services.moveRemote(id, direction);
+		} catch {
+			services.move(id, direction);
+		}
+	}
 </script>
 
 <PageHeader
@@ -54,14 +62,19 @@
 							checked={service.active}
 							label="Offered"
 							size="sm"
-							onchange={(e: Event) => {
-								services.update(service.id, { active: (e.currentTarget as HTMLInputElement).checked });
+							onchange={async (e: Event) => {
+								const active = (e.currentTarget as HTMLInputElement).checked;
+								try {
+									await services.updateRemote(service.id, { active });
+								} catch {
+									services.update(service.id, { active });
+								}
 								toast(`${service.name} ${service.active ? 'offered' : 'hidden'} on the website`);
 							}}
 						/>
 						<ButtonGroup size="sm" ariaLabel="Order">
-							<Button variant="outline" iconOnly icon="chevron-up" label="Move up" disabled={index === 0} onclick={() => services.move(service.id, -1)} />
-							<Button variant="outline" iconOnly icon="chevron-down" label="Move down" disabled={index === services.sorted.length - 1} onclick={() => services.move(service.id, 1)} />
+							<Button variant="outline" iconOnly icon="chevron-up" label="Move up" disabled={index === 0} onclick={() => moveService(service.id, -1)} />
+							<Button variant="outline" iconOnly icon="chevron-down" label="Move down" disabled={index === services.sorted.length - 1} onclick={() => moveService(service.id, 1)} />
 						</ButtonGroup>
 						<Button size="sm" variant="ghost" tone="neutral" icon="pencil" onclick={() => edit(service)}>Edit</Button>
 					</div>
