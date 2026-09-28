@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Button, Field, Input, Modal, SegmentedControl, Textarea, toast } from '@nostospt/ui';
+	import { Button, Field, Input, Modal, SegmentedControl, Select, Textarea, toast } from '@nostospt/ui';
 	import { slugify } from '$lib/admin/shared/format';
+	import { clients } from '$lib/admin/clients/store.svelte';
 	import { albums } from './store.svelte';
 	import type { AlbumStatus, AlbumType } from './types';
 
@@ -9,29 +10,44 @@
 
 	let title = $state('');
 	let description = $state('');
+	let clientId = $state('');
 	let status = $state<AlbumStatus>('DRAFT');
 	let type = $state<AlbumType>('FREE');
 	let submitted = $state(false);
 
 	let error = $derived(submitted && !title.trim() ? 'Give the album a title.' : undefined);
+	let clientError = $derived(submitted && !clientId ? 'Choose the client who owns this album.' : undefined);
 
 	$effect(() => {
 		if (!open) return;
 		title = '';
 		description = '';
+		clientId = clients.items.length === 1 ? (clients.items[0]?.id ?? '') : '';
 		status = 'DRAFT';
 		type = 'FREE';
 		submitted = false;
 	});
 
-	function create(event: SubmitEvent) {
+	async function create(event: SubmitEvent) {
 		event.preventDefault();
 		submitted = true;
-		if (error) return;
-		const album = albums.create({ title: title.trim(), description: description.trim() || null, status, type });
-		open = false;
-		toast.success(`“${album.title}” created`);
-		goto(`/admin/albums/${album.id}`);
+		if (error || clientError) return;
+		try {
+			// Real backend first (Website API → Real API, needs a real client).
+			const album = await albums.createRemote(
+				{ title: title.trim(), description: description.trim() || null, status, type },
+				clientId
+			);
+			open = false;
+			toast.success(`�?o${album.title}�?? created`);
+			goto(`/admin/albums/${album.id}`);
+		} catch {
+			// Offline backend: local-only album.
+			const album = albums.create({ title: title.trim(), description: description.trim() || null, status, type });
+			open = false;
+			toast.success(`�?o${album.title}�?? created`);
+			goto(`/admin/albums/${album.id}`);
+		}
 	}
 </script>
 
@@ -45,6 +61,11 @@
 		<Field label="Description" optional>
 			{#snippet control({ id }: { id: string })}
 				<Textarea {id} bind:value={description} rows={3} />
+			{/snippet}
+		</Field>
+		<Field label="Client" error={clientError}>
+			{#snippet control({ id }: { id: string })}
+				<Select {id} bind:value={clientId} options={clients.options} placeholder="Select a client" invalid={Boolean(clientError)} />
 			{/snippet}
 		</Field>
 		<Field label="Status">

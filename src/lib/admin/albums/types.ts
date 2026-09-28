@@ -50,3 +50,20 @@ export interface AlbumFilters {
 	type?: AlbumType;
 	q?: string;
 }
+
+/** Client favorite of an album photo (Real API: GET /v1/albums/:id/favorites, staff only). */
+export interface AlbumFavorite {
+	id: string;
+	clientId: string;
+	albumId: string;
+	photoId: string;
+	createdAt: string;
+	photo: {
+		id: string;
+		number: number;
+		title: string | null;
+		availability: string;
+		priceCents: number | null;
+		currency: string;
+	} | null;
+}

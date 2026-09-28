@@ -52,7 +52,7 @@ export const mockTransport: UploadTransport = {
  */
 export const apiTransport: UploadTransport = {
 	async put(file, onProgress, signal) {
-		const { key, uploadUrl } = await api<{ key: string; uploadUrl: string }>('/photos/uploads', {
+		const { key, uploadUrl } = await api<{ key: string; uploadUrl: string }>('/v1/photos/uploads', {
 			method: 'POST',
 			body: JSON.stringify({ contentType: file.type || 'application/octet-stream' }),
 			signal
@@ -71,7 +71,7 @@ export const apiTransport: UploadTransport = {
 		return { key };
 	},
 	async register(key, _file, meta) {
-		const photo = await api<Photo>('/photos', {
+		const photo = await api<Photo>('/v1/photos', {
 			method: 'POST',
 			body: JSON.stringify({ ...meta, originalKey: key })
 		});
