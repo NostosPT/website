@@ -1,11 +1,17 @@
-import { env } from '$env/dynamic/public';
-
 /**
- * The Nostos API (Fastify, ~/nostos/api).
- * Set PUBLIC_API_URL (e.g. https://api.nostos.pt) to call the real endpoints.
- * Unset to run the dashboard entirely on mock data.
+ * Browser client for the Website API (BFF): same-origin `/api/...`.
+ *
+ * The browser never talks to the Real API directly and never sees its URL.
+ * The Real API lives behind `API_URL` (server-only) and is reached through
+ * `src/routes/api/[...path]/+server.ts`, which forwards the staff session
+ * cookie per request. Both layers share the Real API error envelope:
+ * `{ error: { code, statusCode, message } }`.
+ *
+ * `API_URL` is always same-origin here, so it is truthy by design: stores
+ * try the real backend first and fall back to local mocks only when the
+ * backend is unreachable (offline development).
  */
-export const API_URL = env.PUBLIC_API_URL?.replace(/\/$/, '') || null;
+export const API_URL = '/api';
 
 export class ApiError extends Error {
 	constructor(
@@ -19,22 +25,29 @@ export class ApiError extends Error {
 	}
 }
 
-/** JSON request with the staff session cookie (httpOnly, so `credentials: 'include'`). */
+/** JSON request against the Website API (staff session cookie included). */
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
-	if (!API_URL) throw new Error('PUBLIC_API_URL is not set');
-	const response = await fetch(`${API_URL}${path}`, {
-		...init,
-		credentials: 'include',
-		headers: { 'content-type': 'application/json', ...init.headers }
-	});
+	let response: Response;
+	try {
+		response = await fetch(`${API_URL}${path}`, {
+			...init,
+			credentials: 'include',
+			headers: { 'content-type': 'application/json', ...init.headers }
+		});
+	} catch {
+		throw new ApiError(0, 'Website API is unreachable', 'SERVICE_UNAVAILABLE');
+	}
 	const body = await response.json().catch(() => null);
 	if (!response.ok) {
-		const message = body?.message ?? response.statusText;
-		const code = body?.code;
-		const details = body?.details;
-		throw new ApiError(response.status, message, code, details);
+		const error = body?.error ?? {};
+		throw new ApiError(
+			response.status,
+			typeof error.message === 'string' ? error.message : response.statusText,
+			typeof error.code === 'string' ? error.code : undefined,
+			error.details
+		);
 	}
-	return response.status === 204 ? (undefined as T) : response.json();
+	return response.status === 204 ? (undefined as T) : (body as T);
 }
 
 /** Pagination parameters used by list endpoints. */
