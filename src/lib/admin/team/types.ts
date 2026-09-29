@@ -40,6 +40,7 @@ export type Area =
 	| 'website'
 	| 'mail'
 	| 'team'
-	| 'settings';
+	| 'settings'
+	| 'field';
 
 export type Access = 'none' | 'view' | 'edit';

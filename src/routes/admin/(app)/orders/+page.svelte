@@ -37,7 +37,7 @@
 </script>
 
 <PageHeader
-	kicker="Finance"
+	kicker="Business"
 	title="Orders"
 	description="Prints and licences sold from the archive. Photo IDs make every order traceable to a single photograph."
 />

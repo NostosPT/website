@@ -59,7 +59,7 @@
 	}
 </script>
 
-<PageHeader kicker="Studio" title="Clients" description="Everyone who commissions work or buys from the archive.">
+<PageHeader kicker="Work" title="Clients" description="Everyone who commissions work or buys from the archive.">
 	{#snippet actions()}
 		<Button icon="user-plus" onclick={() => (creating = true)}>New client</Button>
 	{/snippet}

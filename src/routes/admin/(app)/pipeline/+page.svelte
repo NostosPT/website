@@ -62,7 +62,7 @@
 </script>
 
 <PageHeader
-	kicker="Studio"
+	kicker="Work"
 	title="Pipeline"
 	description="Every request, from the first message to delivery. Estimates are ranges; the quote is the promise."
 >

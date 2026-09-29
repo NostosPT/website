@@ -19,45 +19,42 @@ export const navigation: NavSection[] = [
 		title: null,
 		items: [
 			{ label: 'Overview', href: '/admin', icon: 'bar-chart', exact: true },
-			{ label: 'Mail', href: '/admin/mail', icon: 'inbox', area: 'mail' }
+			{ label: 'Email', href: '/admin/mail', icon: 'inbox', area: 'mail' }
 		]
 	},
 	{
-		title: 'Archive',
+		title: 'WORK',
 		items: [
-			{ label: 'Uploads', href: '/admin/uploads', icon: 'upload', area: 'archive' },
+			{ label: 'Pipeline', href: '/admin/pipeline', icon: 'board', area: 'crm' },
+			{ label: 'Clients', href: '/admin/clients', icon: 'users', area: 'crm' },
+			{ label: 'Services', href: '/admin/services', icon: 'diamond', area: 'studio' },
+			{ label: 'Gallery', href: '/admin/galleries', icon: 'share-2', area: 'studio' },
+			{ label: 'Feedback', href: '/admin/success', icon: 'heart', area: 'crm' }
+		]
+	},
+	{
+		title: 'LIBRARY',
+		items: [
 			{ label: 'Photos', href: '/admin/photos', icon: 'image', area: 'archive' },
 			{ label: 'Albums', href: '/admin/albums', icon: 'bookmark', area: 'archive' },
+			{ label: 'Uploads', href: '/admin/uploads', icon: 'upload', area: 'archive' },
 			{ label: 'Watermarks', href: '/admin/watermarks', icon: 'typography', area: 'archive' }
 		]
 	},
 	{
-		title: 'Studio',
+		title: 'FIELD',
+		items: [{ label: 'Atlas', href: '/admin/atlas', icon: 'globe', area: 'field' }]
+	},
+	{
+		title: 'BUSINESS',
 		items: [
-			{ label: 'Pipeline', href: '/admin/pipeline', icon: 'board', area: 'crm' },
-			{ label: 'Clients', href: '/admin/clients', icon: 'users', area: 'crm' },
-			{ label: 'Galleries', href: '/admin/galleries', icon: 'share-2', area: 'studio' },
-			{ label: 'Services', href: '/admin/services', icon: 'diamond', area: 'studio' },
-			{ label: 'Client success', href: '/admin/success', icon: 'heart', area: 'crm' }
+			{ label: 'Orders', href: '/admin/orders', icon: 'credit-card', area: 'finance' },
+			{ label: 'Invoices', href: '/admin/invoices', icon: 'receipt', area: 'finance' }
 		]
 	},
 	{
-		title: 'Finance',
-		items: [
-			{ label: 'Invoices', href: '/admin/invoices', icon: 'receipt', area: 'finance' },
-			{ label: 'Orders', href: '/admin/orders', icon: 'credit-card', area: 'finance' }
-		]
-	},
-	{
-		title: 'Website',
-		items: [{ label: 'Content', href: '/admin/content', icon: 'globe', area: 'website' }]
-	},
-	{
-		title: 'Workspace',
-		items: [
-			{ label: 'Team', href: '/admin/team', icon: 'user-check', area: 'team' },
-			{ label: 'Settings', href: '/admin/settings', icon: 'settings', area: 'settings' }
-		]
+		title: 'SYSTEM',
+		items: [{ label: 'Team', href: '/admin/team', icon: 'user-check', area: 'team' }]
 	}
 ];
 
@@ -89,6 +86,6 @@ export const createActions: CreateAction[] = [
 	{ label: 'New album', hint: 'Curated collection', icon: 'bookmark', href: '/admin/albums?new' },
 	{ label: 'New gallery', hint: 'Client delivery', icon: 'share-2', href: '/admin/galleries?new' },
 	{ label: 'New client', hint: 'Add to CRM', icon: 'user-plus', href: '/admin/clients?new' },
-	{ label: 'New quote or invoice', hint: 'Finance', icon: 'receipt', href: '/admin/invoices/new' },
-	{ label: 'Compose email', hint: 'Mail', icon: 'send', href: '/admin/mail?compose' }
+	{ label: 'New quote or invoice', hint: 'Business', icon: 'receipt', href: '/admin/invoices/new' },
+	{ label: 'Compose email', hint: 'Email', icon: 'send', href: '/admin/mail?compose' }
 ];

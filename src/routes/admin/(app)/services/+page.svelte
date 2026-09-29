@@ -36,7 +36,7 @@
 </script>
 
 <PageHeader
-	kicker="Studio"
+	kicker="Work"
 	title="Services"
 	description="What the Studio offers, in the order the request form lists it. Estimates are ranges, never guaranteed prices."
 >

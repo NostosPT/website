@@ -20,7 +20,7 @@ let results = $derived(
 </script>
 
 <PageHeader
-	kicker="Archive"
+	kicker="Library"
 	title="Albums"
 	description="Public, curated collections of the archive, in the order you set."
 >

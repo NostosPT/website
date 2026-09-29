@@ -74,7 +74,7 @@
 </script>
 
 <PageHeader
-	kicker="Archive"
+	kicker="Library"
 	title="Photos"
 	description="Every photograph in the archive, published or not. Photo IDs are permanent."
 >

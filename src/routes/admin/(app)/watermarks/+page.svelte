@@ -46,7 +46,7 @@
 </script>
 
 <PageHeader
-	kicker="Archive"
+	kicker="Library"
 	title="Watermarks"
 	description="Subtle and consistent: a watermark protects previews without destroying the photograph. Originals are never watermarked."
 >

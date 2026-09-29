@@ -51,7 +51,7 @@
 </script>
 
 <PageHeader
-	kicker="Finance"
+	kicker="Business"
 	title="Quotes & invoices"
 	description="Draft here; numbers, ATCUD and PDFs come from the certified invoicing provider when a document is issued."
 >

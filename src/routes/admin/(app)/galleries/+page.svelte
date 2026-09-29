@@ -52,7 +52,7 @@
 </script>
 
 <PageHeader
-	kicker="Studio"
+	kicker="Work"
 	title="Galleries"
 	description="Private deliveries for clients: shared by link and an optional access code, with favourites for proofing."
 >

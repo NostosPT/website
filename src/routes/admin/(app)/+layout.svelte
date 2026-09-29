@@ -2,6 +2,8 @@
 	import { page } from '$app/state';
 	import { session } from '$lib/admin/auth/session.svelte';
 	import { albums } from '$lib/admin/albums/store.svelte';
+	import { atlas } from '$lib/admin/atlas/store.svelte';
+	import { atlasCategories } from '$lib/admin/atlas/categories.svelte';
 	import { clients } from '$lib/admin/clients/store.svelte';
 	import { galleries } from '$lib/admin/galleries/store.svelte';
 	import ComposeDialog from '$lib/admin/mail/ComposeDialog.svelte';
@@ -41,6 +43,8 @@
 		void galleries.load();
 		void albums.load();
 		void photos.load();
+		void atlas.load();
+		void atlasCategories.load();
 	});
 </script>
 

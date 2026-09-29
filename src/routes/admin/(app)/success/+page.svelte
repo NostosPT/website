@@ -33,8 +33,8 @@
 </script>
 
 <PageHeader
-	kicker="Studio"
-	title="Client success"
+	kicker="Work"
+	title="Feedback"
 	description="What happens after delivery: follow-ups, reviews, anniversaries, and the quiet work of being remembered."
 />
 

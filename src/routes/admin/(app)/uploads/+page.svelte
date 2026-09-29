@@ -51,7 +51,7 @@
 </script>
 
 <PageHeader
-	kicker="Archive"
+	kicker="Library"
 	title="Upload"
 	description="Originals go straight to private storage. Nothing is public until you publish it, and uploads keep running while you work elsewhere."
 />

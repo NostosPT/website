@@ -22,7 +22,9 @@ const ALLOWLIST = [
 	'v1/galleries',
 	'v1/clients',
 	'v1/albums',
-	'v1/photos'
+	'v1/photos',
+	'v1/atlas',
+	'v1/categories'
 ];
 
 function upstreamPath(path: string | undefined): string | null {

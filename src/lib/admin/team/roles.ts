@@ -36,7 +36,8 @@ export const roles: Record<Role, RoleDefinition> = {
 			website: 'edit',
 			mail: 'edit',
 			team: 'edit',
-			settings: 'edit'
+			settings: 'edit',
+			field: 'edit'
 		}
 	},
 	PHOTOGRAPHER: {
@@ -51,7 +52,8 @@ export const roles: Record<Role, RoleDefinition> = {
 			website: 'none',
 			mail: 'edit',
 			team: 'view',
-			settings: 'none'
+			settings: 'none',
+			field: 'edit'
 		}
 	},
 	EDITOR: {
@@ -66,7 +68,8 @@ export const roles: Record<Role, RoleDefinition> = {
 			website: 'edit',
 			mail: 'view',
 			team: 'view',
-			settings: 'none'
+			settings: 'none',
+			field: 'edit'
 		}
 	},
 	ASSISTANT: {
@@ -81,7 +84,8 @@ export const roles: Record<Role, RoleDefinition> = {
 			website: 'none',
 			mail: 'edit',
 			team: 'view',
-			settings: 'none'
+			settings: 'none',
+			field: 'view'
 		}
 	},
 	ACCOUNTANT: {
@@ -96,7 +100,8 @@ export const roles: Record<Role, RoleDefinition> = {
 			website: 'none',
 			mail: 'none',
 			team: 'none',
-			settings: 'none'
+			settings: 'none',
+			field: 'none'
 		}
 	}
 };
